@@ -10,8 +10,6 @@
 
 一个基于 Web 的可视化 PowerPoint 演示文稿编辑器，使用基于节点的界面进行创建。采用 React、TypeScript、Vite、React Flow 和 PptxGenJS 构建。
 
-![image](https://github.com/user-attachments/assets/11111111-2222-3333-4444-555555555555) // 截图占位符 - 后续请替换为实际截图 URL
-
 ## ✨ 功能特性
 
 - **可视化幻灯片编辑**: 使用基于节点的界面（由 React Flow 驱动）来添加、排列和可视化您的演示文稿幻灯片。
@@ -40,7 +38,7 @@
 
 1.  克隆仓库：
     ```bash
-    git clone <你的仓库地址>
+    git clone https://github.com/theBigGavin/pptWeb.git
     cd pptweb
     ```
 2.  使用 Yarn 安装依赖：

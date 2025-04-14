@@ -10,8 +10,6 @@
 
 A web-based visual editor for creating PowerPoint presentations using a node-based interface. Built with React, TypeScript, Vite, React Flow, and PptxGenJS.
 
-![image](https://github.com/user-attachments/assets/11111111-2222-3333-4444-555555555555) // Placeholder for screenshot - Replace with actual screenshot URL later
-
 ## ✨ Features
 
 - **Visual Slide Editor**: Use a node-based interface (powered by React Flow) to add, arrange, and visualize your presentation slides.
@@ -40,7 +38,7 @@ A web-based visual editor for creating PowerPoint presentations using a node-bas
 
 1.  Clone the repository:
     ```bash
-    git clone <your-repository-url>
+    git clone https://github.com/theBigGavin/pptWeb.git
     cd pptweb
     ```
 2.  Install dependencies using Yarn:
