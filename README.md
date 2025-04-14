@@ -13,8 +13,17 @@ A web-based visual editor for creating PowerPoint presentations using a node-bas
 ## ✨ Features
 
 - **Visual Slide Editor**: Use a node-based interface (powered by React Flow) to add, arrange, and visualize your presentation slides.
-- **Slide Properties**: Select a slide node to edit its title and content preview via a properties panel.
-- **PPTX Export**: Export your visual layout directly into a `.pptx` file using PptxGenJS. Slides are ordered based on their vertical position in the editor.
+- **Detailed Slide Properties**: Select a slide node to edit its title, choose a layout (affecting available content areas), and input text into up to four distinct content areas via a properties panel.
+- **Toolbar Actions**:
+  - Add new slides.
+  - Automatically arrange slides using Dagre.js (`Auto Layout`).
+  - Save the current presentation state to browser local storage (`Save`).
+  - Load the previously saved state from local storage (`Load`).
+  - Export the visual layout directly into a `.pptx` file using PptxGenJS (`Export PPTX`). Slides are ordered based on their vertical position.
+  - Access application settings (`Settings` - currently a placeholder).
+- **PPTX Export**: Export your visual layout directly into a `.pptx` file. Slides are ordered based on their vertical position in the editor. Layouts and content from the properties panel are included.
+- **Local Storage Persistence**: Save your work in the browser and reload it later.
+- **Custom Controls & Minimap**: Enhanced canvas navigation with zoom controls, node focusing, and a minimap overview.
 - **Modern Tech Stack**: Built with React 19, TypeScript, and Vite for a fast development experience.
 
 ## 🛠️ Tech Stack

@@ -1,20 +1,22 @@
-import React, { useMemo } from 'react'; // Import useMemo
+import React, { useMemo } from "react"; // Import useMemo
 import ReactFlow, {
   Background,
-  Controls,
+  // Controls, // Default controls removed
   MiniMap, // Optional: Adds a minimap
-  Node,
-  Edge,
-  Connection,
-  NodeChange,
-  EdgeChange,
+  Node, // Keep Node type if needed elsewhere, or remove if unused
+  Edge, // Keep Edge type if needed elsewhere, or remove if unused
+  // Connection, // Removed unused import
+  // NodeChange, // Removed unused import
+  // EdgeChange, // Removed unused import
   OnNodesChange,
   OnEdgesChange,
   OnConnect,
   NodeMouseHandler, // Type for onNodeClick
   // PaneClickFunc type is deprecated, use React.MouseEventHandler or similar
-} from 'reactflow';
-import SlideNode from './nodes/SlideNode'; // Import the custom node
+} from "reactflow";
+import SlideNodeComponent from "./nodes/SlideNode"; // Rename component import
+import { SlideNode } from "../types";
+import CustomControls from "./CustomControls"; // Import custom controls
 
 // Define the props type
 interface EditorAreaProps {
@@ -24,7 +26,10 @@ interface EditorAreaProps {
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;
   onNodeClick: NodeMouseHandler; // Pass the handler down
-  onPaneClick: React.MouseEventHandler<Element>; // Correct type for onPaneClick
+  onPaneClick: React.MouseEventHandler<Element>;
+  isPanelVisible: boolean;
+  selectedNode: SlideNode | null;
+  viewportSize: { width: number; height: number }; // Add viewportSize prop type
 }
 
 const EditorArea: React.FC<EditorAreaProps> = ({
@@ -35,9 +40,12 @@ const EditorArea: React.FC<EditorAreaProps> = ({
   onConnect,
   onNodeClick,
   onPaneClick,
+  isPanelVisible,
+  selectedNode,
+  viewportSize, // Destructure viewportSize
 }) => {
   // Define the node types
-  const nodeTypes = useMemo(() => ({ slideNode: SlideNode }), []);
+  const nodeTypes = useMemo(() => ({ slideNode: SlideNodeComponent }), []); // Use renamed component import
 
   return (
     <div className="editor-area-container">
@@ -53,8 +61,18 @@ const EditorArea: React.FC<EditorAreaProps> = ({
         attributionPosition="bottom-left" // Position React Flow attribution
         nodeTypes={nodeTypes} // Register the custom node type
       >
-        <Controls />
-        <MiniMap nodeStrokeWidth={3} zoomable pannable />
+        <CustomControls
+          selectedNode={selectedNode}
+          viewportSize={viewportSize}
+        />{" "}
+        {/* Pass viewportSize */}
+        <MiniMap
+          nodeStrokeWidth={3}
+          zoomable
+          pannable
+          // position="bottom-left" // Removed position, defaults to bottom-right
+          className={isPanelVisible ? "minimap-offset" : ""} // Add class conditionally
+        />
         <Background color="#aaa" gap={16} />
       </ReactFlow>
     </div>

@@ -18,68 +18,151 @@ body {
 
 /* Main App Layout */
 .app-container {
-  display: flex;
+  /* display: flex; */ /* Removed flex display */
   height: 100vh;
   width: 100%;
+  position: relative; /* Needed for absolute positioning of children */
+  overflow: hidden; /* Prevent potential scrollbars from sliding panel */
 }
 
+/* Floating Toolbar Styles */
 .toolbar-container {
-  width: 15%;
-  min-width: 180px; /* Minimum width for toolbar */
-  background-color: #ffffff;
-  border-right: 1px solid #e0e0e0;
-  padding: 20px 15px;
+  position: absolute;
+  top: 20px; /* Position from top */
+  left: 20px; /* Position from left */
+  background-color: rgba(255, 255, 255, 0.95); /* Slightly transparent background */
+  border-radius: 8px;
+  padding: 8px; /* Reduced padding */
   box-sizing: border-box;
-  overflow-y: auto;
-  box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Stronger shadow for floating */
+  z-index: 20; /* Ensure it's above properties panel */
   display: flex;
   flex-direction: column;
+  align-items: flex-start; /* Align items to start */
+  transition: width 0.3s ease-in-out, padding 0.3s ease-in-out; /* Smooth transition */
+  width: auto; /* Auto width based on content */
+  max-height: calc(100vh - 40px); /* Limit height */
+  overflow: hidden; /* Hide overflow initially */
+}
+
+.toolbar-container.collapsed {
+  padding: 8px;
+  width: 46px; /* Width for collapsed state (icon + padding) */
+  align-items: center; /* Center icons when collapsed */
+}
+
+.toolbar-container.collapsed .toolbar-title,
+.toolbar-container.collapsed .toolbar-button span {
+  display: none; /* Hide title and text when collapsed */
+}
+
+.toolbar-container.collapsed .toolbar-button {
+  justify-content: center; /* Center icon in button */
+  padding: 10px 0; /* Adjust padding for icon only */
+}
+
+.toolbar-container.collapsed .toolbar-icon {
+  margin-right: 0; /* Remove margin when text is hidden */
+}
+
+.toolbar-container .toolbar-menu {
+   margin-bottom: 5px; /* Reduce bottom margin */
+}
+
+.toolbar-container .toolbar-menu li {
+    border-bottom: none; /* Remove separators for floating bar */
+    padding-bottom: 0;
+    margin-bottom: 5px; /* Space between buttons */
+}
+
+/* Toggle Button Styles */
+.toolbar-toggle-button {
+  background: #eee;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 8px;
+  cursor: pointer;
+  margin-top: 10px; /* Space above toggle button */
+  align-self: center; /* Center the toggle button */
+  font-size: 1.2em; /* Make icon larger */
+  line-height: 1;
+  color: #555;
+  transition: background-color 0.2s ease;
+}
+
+.toolbar-toggle-button:hover {
+  background: #ddd;
+}
+
+.toolbar-container.collapsed .toolbar-toggle-button {
+   margin-top: 5px;
 }
 
 .editor-area-container {
-  width: 70%;
-  flex-grow: 1; /* Allow editor to take remaining space */
-  background-color: #e9ecef; /* Background for the flow area */
-  position: relative; /* Needed for React Flow controls */
-  overflow: hidden; /* React Flow handles its own scrolling */
+  width: 100%; /* Take full width */
+  height: 100%; /* Take full height */
+  /* flex-grow: 1; */ /* Removed flex property */
+  background-color: #e9ecef;
+  position: relative;
+  overflow: hidden;
 }
 
 .properties-panel-container {
-  width: 15%;
-  min-width: 200px; /* Minimum width for properties */
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 280px; /* Fixed width for the panel */
+  right: -280px; /* Start off-screen */
   background-color: #ffffff;
-  border-left: 1px solid #e0e0e0;
+  /* border-left: 1px solid #e0e0e0; */ /* Optional: keep border? */
   padding: 20px;
   box-sizing: border-box;
   overflow-y: auto;
-  box-shadow: -2px 0 5px rgba(0,0,0,0.05);
+  box-shadow: -3px 0 8px rgba(0,0,0,0.1); /* Adjusted shadow */
+  transition: right 0.3s ease-in-out; /* Sliding transition */
+  z-index: 10; /* Ensure it's above the editor */
 }
 
-/* Toolbar Styles */
+.properties-panel-container.visible {
+  right: 0; /* Slide in */
+}
+
+/* Toolbar Title - Adjusted for floating */
 .toolbar-title {
-  font-size: 1.2em;
+  font-size: 1.1em; /* Slightly smaller */
   font-weight: 600;
   color: #333;
-  margin-bottom: 25px;
-  padding-bottom: 10px;
+  margin-bottom: 15px; /* Reduced margin */
+  padding-bottom: 8px;
   border-bottom: 1px solid #eee;
+  width: 100%; /* Ensure border spans width */
+  text-align: center; /* Center title */
 }
 
 .toolbar-menu {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 0 0 20px 0; /* Add bottom margin to the list */
 }
 
 .toolbar-menu li {
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */ /* Remove bottom margin from li */
+  border-bottom: 1px solid #f0f0f0; /* Add separator line */
+  padding-bottom: 8px; /* Add padding below button before line */
+  margin-bottom: 8px; /* Add margin below line */
+}
+
+.toolbar-menu li:last-child {
+  border-bottom: none; /* Remove border for the last item */
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 .toolbar-button {
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 10px 12px;
+  padding: 8px 12px; /* Slightly reduced padding */
   background-color: transparent;
   border: 1px solid transparent; /* For consistent height */
   border-radius: 6px;
@@ -95,11 +178,27 @@ body {
   color: #000;
 }
 
+.toolbar-button:active {
+  background-color: #e0e0e0; /* Darker background on click */
+  transform: scale(0.98); /* Slight shrink effect */
+  transition: background-color 0.05s ease, transform 0.05s ease; /* Faster transition for active state */
+}
+
 .toolbar-button svg { /* Style for potential icons */
   margin-right: 10px;
   width: 18px;
   height: 18px;
   fill: currentColor; /* Icon color matches text */
+}
+
+.toolbar-icon { /* Style for FontAwesome icons */
+  margin-right: 10px; /* Space between icon and text */
+  width: 16px; /* Adjust size as needed */
+  height: 16px;
+  vertical-align: middle; /* Align icon vertically with text */
+  color: inherit; /* Inherit color from button */
+  width: 18px; /* Consistent icon size */
+  height: 18px;
 }
 
 
@@ -162,4 +261,190 @@ body {
 
 .react-flow__handle {
     opacity: 0.6; /* Make handles less prominent */
+}
+
+/* Add transition to the base minimap class */
+.react-flow__minimap {
+    transition: right 0.3s ease-in-out !important; /* Apply transition to right property */
+}
+
+/* Style for MiniMap offset when properties panel is visible */
+/* Ensure the selector targets the MiniMap component correctly */
+.react-flow__minimap.minimap-offset {
+  right: 300px !important; /* Use !important to override default inline styles if necessary. Adjust value based on panel width (280px) + desired spacing */
+  /* transition: right 0.3s ease-in-out !important; */ /* Removed transition from here */
+}
+
+/* Custom Styles for React Flow Controls */
+.react-flow__controls {
+  padding: 6px !important; /* Reduced padding to decrease height */
+  border-radius: 16px !important; /* More rounded corners */
+  background-color: rgba(255, 255, 255, 0.95) !important; /* White background */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important; /* Softer shadow */
+  bottom: 25px !important; /* Position slightly higher from bottom */
+  display: flex !important; /* Ensure horizontal layout */
+  align-items: center !important;
+}
+
+/* Style for default and custom buttons within controls */
+.react-flow__controls button,
+.react-flow__controls .react-flow__controls-button { /* Target custom button too */
+  width: 30px !important; /* Restore button size */
+  height: 30px !important; /* Restore button size */
+  /* font-size: 5.6em !important; */ /* Remove font-size control for icons */
+  margin: 0 6px !important; /* Increased spacing */
+  border-radius: 12px !important; /* More rounded buttons */
+  border: none !important; /* Remove default border */
+  background-color: #f8f8f8 !important; /* Light background */
+  color: #555 !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+  transition: background-color 0.2s ease, transform 0.1s ease !important;
+}
+
+.react-flow__controls button:hover,
+.react-flow__controls .react-flow__controls-button:hover {
+  background-color: #eee !important;
+}
+
+.react-flow__controls button:active,
+.react-flow__controls .react-flow__controls-button:active {
+  background-color: #e0e0e0 !important;
+  transform: scale(0.95) !important;
+}
+
+.react-flow__controls button:disabled,
+.react-flow__controls .react-flow__controls-button:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  background-color: #f8f8f8 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* Directly style the SVG icon inside the controls buttons */
+.react-flow__controls button svg,
+.react-flow__controls .react-flow__controls-button svg {
+    max-width: 14px !important; /* Increased icon width */
+    max-height: 14px !important; /* Increased icon height */
+}
+
+/* Settings Button Styles */
+.settings-button {
+  position: absolute;
+  bottom: 25px; /* Align with controls */
+  left: 20px; /* Position from left */
+  width: 40px; /* Match controls button size */
+  height: 40px; /* Match controls button size */
+  border-radius: 50%; /* Make it round */
+  background-color: rgba(248, 248, 248, 0.95); /* Match controls button background */
+  border: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important; /* Match controls button shadow */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 20; /* Above editor, same level as controls */
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  color: #555; /* Match controls button color */
+}
+
+.settings-button:hover {
+  background-color: #eee !important; /* Match controls hover */
+}
+
+.settings-button:active {
+   transform: scale(0.9); /* Slightly stronger active effect */
+   background-color: #e0e0e0 !important; /* Match controls active */
+}
+
+.settings-button svg { /* Style the icon inside */
+  width: 20px; /* Adjust icon size */
+  height: 20px;
+}
+
+/* Spinning animation */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.settings-button.spin svg {
+  animation: spin 0.5s linear;
+}
+
+
+/* Settings Modal Styles */
+.settings-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure modal is on top */
+  opacity: 0; /* Start hidden */
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+}
+
+.settings-modal-overlay.open {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0s linear 0s;
+}
+
+
+.settings-modal-content {
+  background-color: white;
+  padding: 25px 30px;
+  border-radius: 12px; /* Rounded corners */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  min-width: 400px; /* Minimum width */
+  max-width: 600px; /* Maximum width */
+  z-index: 1001;
+  transform: scale(0.9); /* Start slightly scaled down */
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.settings-modal-overlay.open .settings-modal-content {
+    transform: scale(1); /* Scale up when open */
+    opacity: 1;
+}
+
+
+.settings-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.settings-modal-header h3 {
+  margin: 0;
+  font-size: 1.4em;
+  color: #333;
+}
+
+.settings-modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  cursor: pointer;
+  color: #888;
+  padding: 0;
+  line-height: 1;
+}
+.settings-modal-close-btn:hover {
+    color: #333;
+}
+
+.settings-modal-body {
+  /* Add styles for modal content area */
+  min-height: 150px; /* Example min height */
 }
