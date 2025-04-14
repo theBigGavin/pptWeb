@@ -1,0 +1,87 @@
+# PPTWeb - 可视化 PowerPoint 编辑器
+
+[![React](https://img.shields.io/badge/React-^19.0.0-blue?logo=react)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-~5.7.2-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-^6.2.0-yellow?logo=vite)](https://vitejs.dev/)
+[![React Flow](https://img.shields.io/badge/React_Flow-^11.11.4-orange)](https://reactflow.dev/)
+[![PptxGenJS](https://img.shields.io/badge/PptxGenJS-^3.12.0-red)](https://gitbrent.github.io/PptxGenJS/)
+[![Yarn](https://img.shields.io/badge/Yarn-^1.22.22-blue?logo=yarn)](https://yarnpkg.com/)
+[![ESLint](https://img.shields.io/badge/ESLint-^9.21.0-purple?logo=eslint)](https://eslint.org/)
+
+一个基于 Web 的可视化 PowerPoint 演示文稿编辑器，使用基于节点的界面进行创建。采用 React、TypeScript、Vite、React Flow 和 PptxGenJS 构建。
+
+![image](https://github.com/user-attachments/assets/11111111-2222-3333-4444-555555555555) // 截图占位符 - 后续请替换为实际截图 URL
+
+## ✨ 功能特性
+
+- **可视化幻灯片编辑**: 使用基于节点的界面（由 React Flow 驱动）来添加、排列和可视化您的演示文稿幻灯片。
+- **幻灯片属性**: 选中幻灯片节点，通过属性面板编辑其标题和内容预览。
+- **PPTX 导出**: 使用 PptxGenJS 将您的可视化布局直接导出为 `.pptx` 文件。幻灯片会根据其在编辑器中的垂直位置进行排序。
+- **现代化技术栈**: 使用 React 19、TypeScript 和 Vite 构建，提供快速的开发体验。
+
+## 🛠️ 技术栈
+
+- **前端框架**: [React](https://reactjs.org/) (^19.0.0)
+- **开发语言**: [TypeScript](https://www.typescriptlang.org/) (~5.7.2)
+- **构建工具**: [Vite](https://vitejs.dev/) (^6.2.0)
+- **节点化界面**: [React Flow](https://reactflow.dev/) (^11.11.4)
+- **PPTX 生成**: [PptxGenJS](https://gitbrent.github.io/PptxGenJS/) (^3.12.0)
+- **包管理器**: [Yarn](https://yarnpkg.com/) (^1.22.22)
+- **代码检查**: [ESLint](https://eslint.org/) (^9.21.0)
+
+## 🚀 快速开始
+
+### 环境要求
+
+- [Node.js](https://nodejs.org/) (推荐使用 LTS 版本)
+- [Yarn](https://yarnpkg.com/getting-started/install) (v1.x 版本)
+
+### 安装
+
+1.  克隆仓库：
+    ```bash
+    git clone <你的仓库地址>
+    cd pptweb
+    ```
+2.  使用 Yarn 安装依赖：
+    ```bash
+    yarn install
+    ```
+
+### 运行开发服务器
+
+启动 Vite 开发服务器（支持热模块替换 HMR）：
+
+```bash
+yarn dev
+```
+
+在浏览器中打开命令行提示的 URL (通常是 `http://localhost:5173`)。
+
+### 构建生产版本
+
+创建优化后的生产版本：
+
+```bash
+yarn build
+```
+
+构建产物将生成在 `dist` 目录下。
+
+### 预览生产版本
+
+在本地预览生产版本：
+
+```bash
+yarn preview
+```
+
+此命令会启动一个服务来托管 `dist` 目录的内容。
+
+## 📄 许可证
+
+本项目当前未指定许可证。
+
+## 🙏 贡献
+
+欢迎贡献！请随时提出 Issue 或提交 Pull Request。（可以在此添加更详细的贡献指南）。
