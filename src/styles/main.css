@@ -1,0 +1,165 @@
+/* Global Resets and Base Styles */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f4f7f6;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden; /* Prevent body scrolling */
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+/* Main App Layout */
+.app-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+.toolbar-container {
+  width: 15%;
+  min-width: 180px; /* Minimum width for toolbar */
+  background-color: #ffffff;
+  border-right: 1px solid #e0e0e0;
+  padding: 20px 15px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-area-container {
+  width: 70%;
+  flex-grow: 1; /* Allow editor to take remaining space */
+  background-color: #e9ecef; /* Background for the flow area */
+  position: relative; /* Needed for React Flow controls */
+  overflow: hidden; /* React Flow handles its own scrolling */
+}
+
+.properties-panel-container {
+  width: 15%;
+  min-width: 200px; /* Minimum width for properties */
+  background-color: #ffffff;
+  border-left: 1px solid #e0e0e0;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  box-shadow: -2px 0 5px rgba(0,0,0,0.05);
+}
+
+/* Toolbar Styles */
+.toolbar-title {
+  font-size: 1.2em;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 25px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.toolbar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.toolbar-menu li {
+  margin-bottom: 10px;
+}
+
+.toolbar-button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px 12px;
+  background-color: transparent;
+  border: 1px solid transparent; /* For consistent height */
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 0.95em;
+  color: #444;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.toolbar-button:hover {
+  background-color: #f0f0f0;
+  color: #000;
+}
+
+.toolbar-button svg { /* Style for potential icons */
+  margin-right: 10px;
+  width: 18px;
+  height: 18px;
+  fill: currentColor; /* Icon color matches text */
+}
+
+
+/* Properties Panel Styles */
+.properties-panel-title {
+  font-size: 1.1em;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.property-group {
+  margin-bottom: 20px;
+}
+
+.property-group label {
+  display: block;
+  font-size: 0.9em;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+.property-group input[type="text"],
+.property-group input[type="color"],
+.property-group select,
+.property-group textarea {
+  width: calc(100% - 16px); /* Account for padding/border */
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9em;
+  box-sizing: border-box;
+}
+
+.property-group textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+/* React Flow Styles (Import these from the library itself) */
+/* You'll typically import reactflow/dist/style.css */
+/* Add custom node styles here if needed */
+.react-flow__node-default { /* Example custom node style */
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 5px;
+  background: white;
+  width: 180px; /* Example width */
+  min-height: 100px; /* Example height */
+  font-size: 12px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.react-flow__node-default.selected {
+    box-shadow: 0 0 0 2px #4285F4; /* Highlight selected node */
+}
+
+.react-flow__handle {
+    opacity: 0.6; /* Make handles less prominent */
+}

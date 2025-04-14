@@ -1,0 +1,34 @@
+# Dependencies
+/node_modules
+
+# Build artifacts
+/dist
+/build
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# IDE files
+.idea
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.sublime-workspace
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env*.local
+!.env.example
+
+# Vite specific
+.vite/
+*.tsbuildinfo
