@@ -1,277 +1,287 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
-// import { Node } from "reactflow"; // Removed unused import
-import { NodeData, SlideLayout, SlideNode } from "../types"; // Import from types.ts
+import React, { useEffect, useMemo, useCallback } from "react";
+import { SlideNode, NodeData, Layer, LayerType, TextFormat, MediaLayer, TableLayer, ChartLayer, TextLayer, TitleLayer, FooterLayer } from "../types"; // Import necessary types
 
 // Define the props type
 interface PropertiesPanelProps {
-  selectedNode: SlideNode | null; // Use SlideNode type
-  updateNodeData: (nodeId: string, newData: Partial<NodeData>) => void;
-  deleteNode: (nodeId: string) => void; // Add deleteNode prop type
+  selectedNode: SlideNode | null;
+  selectedLayerId: string | null; // ID of the selected layer within the node
+  updateLayerData: (nodeId: string, layerId: string, newLayerData: Partial<Layer>) => void; // Function to update layer data
+  deleteNode: (nodeId: string) => void;
+  // TODO: Add deleteLayer function prop later
 }
+
+// Helper function to render common style editors
+const renderCommonStyleEditors = (
+    layer: Layer,
+    nodeId: string,
+    updateLayerData: PropertiesPanelProps['updateLayerData']
+) => {
+    const handleStyleChange = (property: keyof React.CSSProperties, value: any) => {
+        updateLayerData(nodeId, layer.id, {
+            style: { ...layer.style, [property]: value }
+        });
+    };
+
+    return (
+        <>
+            {/* Position & Size */}
+            <div className="property-group">
+                <h4>位置和大小</h4>
+                <label>Left:</label>
+                <input type="number" value={layer.style?.left ?? ''} onChange={(e) => handleStyleChange('left', e.target.value + 'px')} />
+                <label>Top:</label>
+                <input type="number" value={layer.style?.top ?? ''} onChange={(e) => handleStyleChange('top', e.target.value + 'px')} />
+                <label>Width:</label>
+                <input type="text" value={layer.style?.width ?? ''} onChange={(e) => handleStyleChange('width', e.target.value)} placeholder="e.g., 100px or 50%" />
+                <label>Height:</label>
+                <input type="text" value={layer.style?.height ?? ''} onChange={(e) => handleStyleChange('height', e.target.value)} placeholder="e.g., 50px or auto" />
+            </div>
+            {/* Background */}
+            <div className="property-group">
+                <h4>背景</h4>
+                <label>颜色:</label>
+                <input type="color" value={layer.style?.backgroundColor ?? '#ffffff'} onChange={(e) => handleStyleChange('backgroundColor', e.target.value)} />
+                <label>图片 URL:</label>
+                <input type="text" value={layer.style?.backgroundImage?.replace(/url\(['"]?(.*?)['"]?\)/, '$1') ?? ''} onChange={(e) => handleStyleChange('backgroundImage', e.target.value ? `url(${e.target.value})` : undefined)} placeholder="输入图片 URL" />
+                 {/* Add more background properties like size, repeat etc. if needed */}
+            </div>
+             {/* Z-Index */}
+             <div className="property-group">
+                 <label htmlFor={`layerZIndex-${layer.id}`}>层级 (Z-Index):</label>
+                 <input
+                     type="number"
+                     id={`layerZIndex-${layer.id}`}
+                     value={layer.style?.zIndex ?? 0}
+                     onChange={(e) => handleStyleChange('zIndex', parseInt(e.target.value, 10) || 0)}
+                 />
+             </div>
+        </>
+    );
+};
+
+// Helper function to render text format editors
+const renderTextFormatEditors = (
+    layer: TextLayer | TitleLayer | FooterLayer, // Types that have textFormat
+    nodeId: string,
+    updateLayerData: PropertiesPanelProps['updateLayerData']
+) => {
+    const handleTextFormatChange = (property: keyof TextFormat, value: any) => {
+        updateLayerData(nodeId, layer.id, {
+            textFormat: { ...(layer.textFormat || {}), [property]: value }
+        });
+    };
+
+    const textFormat = layer.textFormat || {};
+
+    return (
+        <div className="property-group">
+            <h4>文本格式</h4>
+            <label>字体大小:</label>
+            <input type="text" value={textFormat.fontSize ?? ''} onChange={(e) => handleTextFormatChange('fontSize', e.target.value)} placeholder="e.g., 16px or 1.2em" />
+            <label>颜色:</label>
+            <input type="color" value={textFormat.color ?? '#000000'} onChange={(e) => handleTextFormatChange('color', e.target.value)} />
+            <label>粗细:</label>
+            <input type="text" value={textFormat.fontWeight ?? ''} onChange={(e) => handleTextFormatChange('fontWeight', e.target.value)} placeholder="e.g., bold or 600" />
+            <label>对齐:</label>
+            <select value={textFormat.textAlign ?? 'left'} onChange={(e) => handleTextFormatChange('textAlign', e.target.value)}>
+                <option value="left">左对齐</option>
+                <option value="center">居中</option>
+                <option value="right">右对齐</option>
+                <option value="justify">两端对齐</option>
+            </select>
+            {/* Add more text format inputs: fontStyle, fontFamily, etc. */}
+        </div>
+    );
+};
+
 
 const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
   selectedNode,
-  updateNodeData,
-  deleteNode, // Destructure deleteNode prop
+  selectedLayerId,
+  updateLayerData,
+  deleteNode,
 }) => {
-  // Local state to manage form inputs, synced with selectedNode
-  const [labelText, setLabelText] = useState("");
-  const [layout, setLayout] = useState(""); // Add state for layout
-  const [content1Value, setContent1Value] = useState(""); // Renamed state for first content area
-  const [content2Value, setContent2Value] = useState(""); // Add state for second content area
-  const [content3Value, setContent3Value] = useState(""); // Add state for third content area
-  const [content4Value, setContent4Value] = useState(""); // Add state for fourth content area
-  // Add more states for other properties like color etc.
-  // const [backgroundColor, setBackgroundColor] = useState('#ffffff');
-  // Effect to update local state when selectedNode changes
-  useEffect(() => {
-    if (selectedNode) {
-      setLabelText(selectedNode.data?.label || "");
-      setLayout(selectedNode.data?.layout || "title_content"); // Sync layout state
-      setContent1Value(selectedNode.data?.content1 || ""); // Sync content1 state
-      setContent2Value(selectedNode.data?.content2 || ""); // Sync content2 state
-      setContent3Value(selectedNode.data?.content3 || ""); // Sync content3 state
-      setContent4Value(selectedNode.data?.content4 || ""); // Sync content4 state
-      // setBackgroundColor(selectedNode.data?.backgroundColor || '#ffffff');
-    } else {
-      // Reset when no node is selected
-      setLabelText("");
-      setLayout(""); // Reset layout state
-      setContent1Value(""); // Reset content1 state
-      setContent2Value(""); // Reset content2 state
-      setContent3Value(""); // Reset content3 state
-      setContent4Value(""); // Reset content4 state
-      // setBackgroundColor('#ffffff');
-    }
-  }, [selectedNode]);
 
-  // Handle input changes and call updateNodeData to sync with App state
-  const handleLabelChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const newLabel = event.target.value;
-    setLabelText(newLabel);
-    if (selectedNode) {
-      updateNodeData(selectedNode.id, { label: newLabel });
+  // Find the selected layer object based on selectedLayerId
+  const selectedLayer = useMemo(() => {
+    if (!selectedNode || !selectedLayerId) return null;
+    return selectedNode.data?.layers.find(layer => layer.id === selectedLayerId) || null;
+  }, [selectedNode, selectedLayerId]);
+
+  // --- Event Handlers for Specific Layer Types ---
+
+  const handleNameChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    if (selectedNode && selectedLayer) {
+      updateLayerData(selectedNode.id, selectedLayer.id, { name: event.target.value });
+    }
+  }, [selectedNode, selectedLayer, updateLayerData]);
+
+  const handleContentChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+      if (selectedNode && selectedLayer && ('content' in selectedLayer)) {
+          updateLayerData(selectedNode.id, selectedLayer.id, { content: event.target.value });
+      }
+  }, [selectedNode, selectedLayer, updateLayerData]);
+
+  const handleMediaUrlChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+      if (selectedNode && selectedLayer?.type === 'media') {
+          updateLayerData(selectedNode.id, selectedLayer.id, { url: event.target.value });
+      }
+  }, [selectedNode, selectedLayer, updateLayerData]);
+
+   const handleMediaTypeChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
+        if (selectedNode && selectedLayer?.type === 'media') {
+            updateLayerData(selectedNode.id, selectedLayer.id, { mediaType: event.target.value as MediaLayer['mediaType'] });
+        }
+    }, [selectedNode, selectedLayer, updateLayerData]);
+
+    const handleObjectFitChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
+        if (selectedNode && selectedLayer?.type === 'media') {
+            updateLayerData(selectedNode.id, selectedLayer.id, { objectFit: event.target.value as MediaLayer['objectFit'] });
+        }
+    }, [selectedNode, selectedLayer, updateLayerData]);
+
+  // --- Render Logic ---
+
+  const renderLayerSpecificEditors = () => {
+    if (!selectedNode || !selectedLayer) return null;
+
+    switch (selectedLayer.type) {
+      case 'title':
+      case 'footer':
+      case 'text':
+        return (
+          <>
+            <div className="property-group">
+              <label htmlFor={`layerContent-${selectedLayer.id}`}>内容:</label>
+              <textarea
+                id={`layerContent-${selectedLayer.id}`}
+                value={selectedLayer.content}
+                onChange={handleContentChange}
+                rows={3}
+              />
+            </div>
+            {renderTextFormatEditors(selectedLayer, selectedNode.id, updateLayerData)}
+          </>
+        );
+      case 'media':
+        return (
+          <>
+            <div className="property-group">
+              <label htmlFor={`layerUrl-${selectedLayer.id}`}>媒体 URL:</label>
+              <input
+                type="text"
+                id={`layerUrl-${selectedLayer.id}`}
+                value={selectedLayer.url}
+                onChange={handleMediaUrlChange}
+                placeholder="输入图片/视频 URL"
+              />
+            </div>
+             <div className="property-group">
+                <label htmlFor={`layerMediaType-${selectedLayer.id}`}>媒体类型:</label>
+                <select
+                    id={`layerMediaType-${selectedLayer.id}`}
+                    value={selectedLayer.mediaType}
+                    onChange={handleMediaTypeChange}
+                >
+                    <option value="image">图片</option>
+                    <option value="video">视频</option>
+                    {/* <option value="animation">动画</option> */}
+                </select>
+            </div>
+             <div className="property-group">
+                <label htmlFor={`layerObjectFit-${selectedLayer.id}`}>适应方式:</label>
+                <select
+                    id={`layerObjectFit-${selectedLayer.id}`}
+                    value={selectedLayer.objectFit ?? 'contain'}
+                    onChange={handleObjectFitChange}
+                >
+                    <option value="contain">Contain</option>
+                    <option value="cover">Cover</option>
+                    <option value="fill">Fill</option>
+                    <option value="none">None</option>
+                    <option value="scale-down">Scale Down</option>
+                </select>
+            </div>
+          </>
+        );
+      case 'table':
+        return <p>表格编辑功能待实现。</p>;
+      case 'chart':
+        return <p>图表编辑功能待实现。</p>;
+      case 'background':
+        return <p>背景属性通过下方样式编辑。</p>; // Background only has style properties
+       case 'content-area':
+        return <p>内容区域仅用于布局，无特定属性。</p>;
+      default:
+        return <p>未知图层类型。</p>;
     }
   };
 
-  // const handleColorChange = (event: ChangeEvent<HTMLInputElement>) => {
-  //   const newColor = event.target.value;
-  //   setBackgroundColor(newColor);
-  //   if (selectedNode) {
-  //     updateNodeData(selectedNode.id, { backgroundColor: newColor });
-  //     // You might also need to update the node style directly for visual feedback
-  //     // This often requires more complex state management or direct access to React Flow instance
-  //   }
-  // };
-
-  // Handle layout changes
-  const handleLayoutChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const newLayout = event.target.value;
-    setLayout(newLayout);
-    if (selectedNode) {
-      updateNodeData(selectedNode.id, { layout: newLayout as SlideLayout }); // Cast to SlideLayout
-    }
-  };
-
-  // Handle content1 changes
-  const handleContent1Change = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    const newContent = event.target.value;
-    setContent1Value(newContent);
-    if (selectedNode) {
-      updateNodeData(selectedNode.id, { content1: newContent });
-    }
-  };
-
-  // Handle content2 changes
-  const handleContent2Change = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    const newContent = event.target.value;
-    setContent2Value(newContent);
-    if (selectedNode) {
-      updateNodeData(selectedNode.id, { content2: newContent });
-    }
-  };
-
-  // Handle content3 changes
-  const handleContent3Change = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    const newContent = event.target.value;
-    setContent3Value(newContent);
-    if (selectedNode) {
-      updateNodeData(selectedNode.id, { content3: newContent });
-    }
-  };
-
-  // Handle content4 changes
-  const handleContent4Change = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    const newContent = event.target.value;
-    setContent4Value(newContent);
-    if (selectedNode) {
-      updateNodeData(selectedNode.id, { content4: newContent });
-    }
-  };
-  // Return content directly, container div is now in App.tsx
   return (
     <>
       <h3 className="properties-panel-title">属性编辑</h3>
       {selectedNode ? (
-        <div>
-          <div className="property-group">
-            <label htmlFor="nodeLabel">页面标题:</label>
-            <input
-              type="text"
-              id="nodeLabel"
-              value={labelText}
-              onChange={handleLabelChange}
-            />
-          </div>
-
-          {/* Example for Background Color (requires more setup for visual update) */}
-          {/* <div className="property-group">
-            <label htmlFor="nodeBgColor">背景颜色:</label>
-            <input
-              type="color"
-              id="nodeBgColor"
-              value={backgroundColor}
-              onChange={handleColorChange}
-            />
-          </div> */}
-
-          <div className="property-group">
-            <label htmlFor="nodeLayout">布局:</label>
-            <select
-              id="nodeLayout"
-              value={layout}
-              onChange={handleLayoutChange}
-            >
-              <option value="title_content">标题+内容</option>
-              <option value="title_only">仅标题</option>
-              <option value="blank">空白</option>
-              <option value="title_two_content_vertical">
-                标题+双内容(垂直)
-              </option>
-              <option value="title_two_content_horizontal">
-                标题+双内容(水平)
-              </option>
-              <option value="title_four_content_grid">标题+4内容(网格)</option>
-              <option value="title_four_content_horizontal">
-                标题+4内容(水平)
-              </option>
-            </select>
-          </div>
-
-          <div className="property-group">
-            {/* Content Area 1 */}
-            {/* Content Area 1 */}
-            {(layout === "title_content" ||
-              layout === "title_two_content_vertical" ||
-              layout === "title_two_content_horizontal" ||
-              layout === "title_four_content_grid" ||
-              layout === "title_four_content_horizontal") && (
-              <div className="property-group" style={{ marginBottom: "10px" }}>
-                <label htmlFor="nodeContent1">
-                  {layout === "title_content" ? "内容:" : "内容 1:"}
-                </label>
-                <textarea
-                  id="nodeContent1"
-                  placeholder="编辑内容区域 1..."
-                  value={content1Value}
-                  onChange={handleContent1Change}
-                  rows={
-                    layout === "title_four_content_grid" ||
-                    layout === "title_four_content_horizontal"
-                      ? 2
-                      : layout === "title_two_content_horizontal"
-                      ? 5
-                      : 3
-                  }
-                ></textarea>
-              </div>
-            )}
-            {/* Content Area 2 */}
-            {/* Content Area 2 */}
-            {(layout === "title_two_content_vertical" ||
-              layout === "title_two_content_horizontal" ||
-              layout === "title_four_content_grid" ||
-              layout === "title_four_content_horizontal") && (
-              <div className="property-group" style={{ marginBottom: "10px" }}>
-                <label htmlFor="nodeContent2">内容 2:</label>
-                <textarea
-                  id="nodeContent2"
-                  placeholder="编辑内容区域 2..."
-                  value={content2Value}
-                  onChange={handleContent2Change}
-                  rows={
-                    layout === "title_four_content_grid" ||
-                    layout === "title_four_content_horizontal"
-                      ? 2
-                      : layout === "title_two_content_horizontal"
-                      ? 5
-                      : 3
-                  }
-                ></textarea>
-              </div>
-            )}
-            {/* Content Area 3 */}
-            {/* Content Area 3 */}
-            {(layout === "title_four_content_grid" ||
-              layout === "title_four_content_horizontal") && (
-              <div className="property-group" style={{ marginBottom: "10px" }}>
-                <label htmlFor="nodeContent3">内容 3:</label>
-                <textarea
-                  id="nodeContent3"
-                  placeholder="编辑内容区域 3..."
-                  value={content3Value}
-                  onChange={handleContent3Change}
-                  rows={2}
-                ></textarea>
-              </div>
-            )}
-            {/* Content Area 4 */}
-            {/* Content Area 4 */}
-            {(layout === "title_four_content_grid" ||
-              layout === "title_four_content_horizontal") && (
+        <>
+          {selectedLayer ? (
+            <div>
               <div className="property-group">
-                <label htmlFor="nodeContent4">内容 4:</label>
-                <textarea
-                  id="nodeContent4"
-                  placeholder="编辑内容区域 4..."
-                  value={content4Value}
-                  onChange={handleContent4Change}
-                  rows={2}
-                ></textarea>
+                <label htmlFor={`layerName-${selectedLayer.id}`}>图层名称:</label>
+                <input
+                  type="text"
+                  id={`layerName-${selectedLayer.id}`}
+                  value={selectedLayer.name}
+                  onChange={handleNameChange}
+                />
               </div>
-            )}
-          </div>
+              <p style={{ fontSize: '0.8em', color: '#999' }}>类型: {selectedLayer.type}, ID: {selectedLayer.id}</p>
+              <hr style={{ margin: '15px 0', borderColor: 'var(--border-color-light)' }} />
 
-          {/* Add more property editors here */}
-          <p style={{ fontSize: "0.8em", color: "#777" }}>
-            ID: {selectedNode.id}
-          </p>
+              {/* Render editors specific to the selected layer type */}
+              {renderLayerSpecificEditors()}
 
-          {/* Delete Button */}
+              <hr style={{ margin: '15px 0', borderColor: 'var(--border-color-light)' }} />
+
+              {/* Render common style editors for all layer types */}
+              {renderCommonStyleEditors(selectedLayer, selectedNode.id, updateLayerData)}
+
+              {/* TODO: Add Delete Layer Button */}
+               <button
+                   // onClick={() => deleteLayer(selectedNode.id, selectedLayer.id)} // Needs deleteLayer function
+                   style={{ marginTop: '15px', backgroundColor: '#ffc107', color: 'black' }}
+                   disabled // Disable until function is implemented
+               >
+                   删除此图层 (待实现)
+               </button>
+
+            </div>
+          ) : (
+            <p style={{ color: "#777", textAlign: "center", marginTop: "20px" }}>
+              请在左侧图层面板选择一个图层进行编辑
+            </p>
+          )}
+
+          <hr style={{ margin: '25px 0', borderColor: 'var(--border-color-medium)' }} />
+
+          {/* Node-level actions */}
           <button
             onClick={() => deleteNode(selectedNode.id)}
             style={{
-              marginTop: "20px",
               padding: "8px 15px",
-              backgroundColor: "#dc3545", // Red color for delete
+              backgroundColor: "#dc3545",
               color: "white",
               border: "none",
               borderRadius: "4px",
               cursor: "pointer",
               width: "100%",
               fontSize: "0.9em",
-              transition: "background-color 0.2s ease",
             }}
-            onMouseOver={(e) =>
-              (e.currentTarget.style.backgroundColor = "#c82333")
-            }
-            onMouseOut={(e) =>
-              (e.currentTarget.style.backgroundColor = "#dc3545")
-            }
           >
             删除此页面
           </button>
-        </div>
+           <p style={{ fontSize: "0.8em", color: "#777", marginTop: '10px' }}>
+             页面 ID: {selectedNode.id}
+           </p>
+        </>
       ) : (
         <p style={{ color: "#777", textAlign: "center", marginTop: "30px" }}>
           请在编辑区选中一个页面进行编辑

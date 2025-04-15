@@ -10,27 +10,21 @@
   --bg-hover: #f0f0f0; /* Hover background */
   --bg-active: #e0e0e0; /* Active background */
   --bg-button: #f8f8f8; /* Specific button background (controls) */
-
   --text-primary: #333; /* Primary text */
   --text-secondary: #555; /* Secondary text, icons */
   --text-tertiary: #888; /* Tertiary text (e.g., close button, version) */
   --text-button: #444; /* Toolbar button text */
   --text-inverted: #ffffff; /* Text on dark backgrounds (if any in light mode) */
   --text-placeholder: #aaa;
-
   --border-color: #ccc; /* Input borders */
   --border-color-light: #eee; /* Separator lines */
   --border-color-medium: #ddd; /* Node borders */
-
   --accent-color: #4285F4; /* Highlight color (e.g., selected node, focus) */
   --accent-focus-shadow: rgba(66, 133, 244, 0.2); /* Focus ring shadow */
-
   --shadow-color: rgba(0, 0, 0, 0.15); /* Main shadow */
   --shadow-light: rgba(0, 0, 0, 0.1); /* Lighter shadow */
   --shadow-node: rgba(0, 0, 0, 0.08); /* Node shadow */
-
   --overlay-bg: rgba(0, 0, 0, 0.5); /* Modal overlay */
-
   --scrollbar-thumb: #c1c1c1;
   --scrollbar-track: var(--bg-primary);
 }
@@ -46,27 +40,21 @@ body[data-theme="dark"] {
   --bg-hover: #4a4a4a;
   --bg-active: #5a5a5a;
   --bg-button: #333;
-
   --text-primary: #e0e0e0;
   --text-secondary: #b0b0b0;
   --text-tertiary: #888;
   --text-button: #c0c0c0;
   --text-inverted: #1a1a1a;
   --text-placeholder: #666;
-
   --border-color: #555;
   --border-color-light: #444;
   --border-color-medium: #666;
-
   --accent-color: #5c9dff;
   --accent-focus-shadow: rgba(92, 157, 255, 0.3);
-
   --shadow-color: rgba(0, 0, 0, 0.5);
   --shadow-light: rgba(0, 0, 0, 0.4);
   --shadow-node: rgba(0, 0, 0, 0.3);
-
   --overlay-bg: rgba(0, 0, 0, 0.7);
-
   --scrollbar-thumb: #555;
   --scrollbar-track: var(--bg-primary);
 }
@@ -79,11 +67,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--bg-primary);
-  color: var(--text-primary); /* Set base text color */
-  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth theme transition */
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
   height: 100vh;
   width: 100vw;
-  overflow: hidden; /* Prevent body scrolling */
+  overflow: hidden;
 }
 
 #root {
@@ -93,90 +81,199 @@ body {
 
 /* Main App Layout */
 .app-container {
-  /* display: flex; */ /* Removed flex display */
   height: 100vh;
   width: 100%;
-  position: relative; /* Needed for absolute positioning of children */
-  overflow: hidden; /* Prevent potential scrollbars from sliding panel */
+  position: relative;
+  overflow: hidden;
 }
 
-/* Floating Toolbar Styles */
-.toolbar-container {
+/* Layer Panel Styles - Absolute Positioning */
+.layer-panel {
   position: absolute;
-  top: 20px; /* Position from top */
-  left: 20px; /* Position from left */
-  background-color: var(--bg-secondary-translucent);
-  border-radius: 8px;
-  padding: 8px; /* Reduced padding */
+  top: 0;
+  bottom: 0;
+  width: 250px;
+  left: -250px;
+  background-color: var(--bg-secondary);
+  border-right: 1px solid var(--border-color-light);
+  overflow: hidden;
+  /* Define base transition (for sliding out/left) */
+  transition: left 0.3s linear;
   box-sizing: border-box;
-  box-shadow: 0 4px 12px var(--shadow-color);
-  z-index: 20; /* Ensure it's above properties panel */
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Align items to start */
-  transition: width 0.3s ease-in-out, padding 0.3s ease-in-out; /* Smooth transition */
-  width: auto; /* Auto width based on content */
-  max-height: calc(100vh - 40px); /* Limit height */
-  overflow: hidden; /* Hide overflow initially */
+  height: 100%;
+  padding: 0;
+  z-index: 15;
+  box-shadow: 2px 0 8px var(--shadow-light);
+}
+
+.layer-panel.visible {
+  left: 0;
+  /* Override transition specifically for sliding in/right */
+  transition: left 0.2s ease-out; /* Faster slide-in */
+}
+
+.layer-panel h3 {
+  padding: 10px 15px;
+  margin: 0;
+  border-bottom: 1px solid var(--border-color-light);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+/* Style for the react-arborist tree container */
+.layer-panel > div[role="tree"] {
+  flex-grow: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100% !important;
+  height: auto !important;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+/* Styles for react-arborist nodes */
+.react-arborist-node {
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-bottom: 2px;
+  font-size: 0.9em;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.react-arborist-node:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.react-arborist-node-selected > div > div {
+  background-color: var(--accent-color) !important;
+  color: var(--text-inverted) !important;
+  border-radius: 4px;
+}
+.react-arborist-node-selected:hover > div > div {
+   background-color: var(--accent-color) !important;
+}
+
+
+.react-arborist-node-focused > div > div {
+  outline: 1px dashed var(--accent-color);
+  outline-offset: -2px;
+}
+
+/* Ensure the drop cursor is visible */
+.react-arborist-drop-cursor {
+    background-color: var(--accent-color);
+    height: 2px;
+}
+
+/* Style for react-arborist indentation guides */
+.react-arborist-node-container {
+    position: relative;
+}
+
+/* Style the pseudo-element as the guide line */
+.react-arborist-node-container > div[role="treeitem"]::before {
+    content: '';
+    position: absolute;
+    left: 12px;
+    top: -15px;
+    bottom: 0;
+    width: 1px;
+    background-color: var(--border-color-light);
+    z-index: -1;
+}
+
+/* Hide the guide line for the top-level nodes */
+.layer-panel > div[role="tree"] > div > .react-arborist-node-container > div[role="treeitem"]::before {
+    display: none;
+}
+
+/* Adjust line height/position if needed */
+.react-arborist-node-container > div[role="treeitem"] {
+    position: relative;
+}
+
+/* Floating Toolbar Styles - Horizontal */
+.toolbar-container {
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--bg-secondary-translucent);
+  border-radius: 8px;
+  padding: 5px 10px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  z-index: 20;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease-in-out;
+  height: auto;
+  gap: 5px;
 }
 
 .toolbar-container.collapsed {
-  padding: 8px;
-  width: 46px; /* Width for collapsed state (icon + padding) */
-  align-items: center; /* Center icons when collapsed */
+  padding: 5px;
 }
 
-.toolbar-container.collapsed .toolbar-title,
 .toolbar-container.collapsed .toolbar-button span {
-  display: none; /* Hide title and text when collapsed */
+  display: none;
 }
 
 .toolbar-container.collapsed .toolbar-button {
-  justify-content: center; /* Center icon in button */
-  padding: 10px 0; /* Adjust padding for icon only */
+  min-width: auto;
+  padding: 8px;
 }
 
 .toolbar-container.collapsed .toolbar-icon {
-  margin-right: 0; /* Remove margin when text is hidden */
+  margin-bottom: 0;
 }
 
 .toolbar-container .toolbar-menu {
-   margin-bottom: 5px; /* Reduce bottom margin */
+   margin: 0;
+   display: flex;
+   flex-direction: row;
+   align-items: center;
 }
 
 .toolbar-container .toolbar-menu li {
-    border-bottom: none; /* Remove separators for floating bar */
+    border-bottom: none;
     padding-bottom: 0;
-    margin-bottom: 5px; /* Space between buttons */
+    margin-bottom: 0;
+    margin-right: 5px;
 }
 
-/* Toggle Button Styles */
+/* Toggle Button Styles - Restored and Adjusted */
 .toolbar-toggle-button {
   background: var(--bg-tertiary);
   border: none;
-  border-radius: 4px;
-  padding: 5px 8px;
+  border-radius: 6px;
+  padding: 8px 10px;
   cursor: pointer;
-  margin-top: 10px; /* Space above toggle button */
-  align-self: center; /* Center the toggle button */
-  font-size: 1.2em; /* Make icon larger */
+  font-size: 1.1em;
   line-height: 1;
   color: var(--text-secondary);
   transition: background-color 0.2s ease;
+  flex-shrink: 0;
 }
 
 .toolbar-toggle-button:hover {
-  background: var(--bg-hover); /* Use hover background */
-}
-
-.toolbar-container.collapsed .toolbar-toggle-button {
-   margin-top: 5px;
+  background: var(--bg-hover);
 }
 
 .editor-area-container {
-  width: 100%; /* Take full width */
-  height: 100%; /* Take full height */
-  /* flex-grow: 1; */ /* Removed flex property */
+  width: 100%;
+  height: 100%;
   background-color: var(--bg-canvas);
   position: relative;
   overflow: hidden;
@@ -186,64 +283,58 @@ body {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 280px; /* Fixed width for the panel */
-  right: -280px; /* Start off-screen */
+  width: 280px;
+  right: -280px;
   background-color: var(--bg-secondary);
-  /* border-left: 1px solid var(--border-color-light); */ /* Optional: keep border? */
   padding: 20px;
   box-sizing: border-box;
   overflow-y: auto;
   box-shadow: -3px 0 8px var(--shadow-light);
-  transition: right 0.3s ease-in-out; /* Sliding transition */
-  z-index: 10; /* Ensure it's above the editor */
+  transition: right 0.3s ease-in-out;
+  z-index: 10;
 }
 
 .properties-panel-container.visible {
-  right: 0; /* Slide in */
+  right: 0;
 }
 
-/* Toolbar Title - Adjusted for floating */
 .toolbar-title {
-  font-size: 1.1em; /* Slightly smaller */
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 15px; /* Reduced margin */
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--border-color-light);
-  width: 100%; /* Ensure border spans width */
-  text-align: center; /* Center title */
+ display: none;
 }
 
 .toolbar-menu {
   list-style: none;
   padding: 0;
-  margin: 0 0 20px 0; /* Add bottom margin to the list */
+  margin: 0;
+  display: flex;
+  flex-direction: row;
 }
 
 .toolbar-menu li {
-  /* margin-bottom: 10px; */ /* Remove bottom margin from li */
-  border-bottom: 1px solid var(--border-color-light); /* Use light border */
-  padding-bottom: 8px; /* Add padding below button before line */
-  margin-bottom: 8px; /* Add margin below line */
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
+  margin-right: 5px;
 }
 
 .toolbar-menu li:last-child {
-  border-bottom: none; /* Remove border for the last item */
-  margin-bottom: 0;
-  padding-bottom: 0;
+  margin-right: 0;
 }
 
 .toolbar-button {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  width: 100%;
-  padding: 8px 12px; /* Slightly reduced padding */
+  justify-content: center;
+  width: auto;
+  min-width: 60px;
+  padding: 8px 5px;
   background-color: transparent;
-  border: 1px solid transparent; /* For consistent height */
+  border: 1px solid transparent;
   border-radius: 6px;
   cursor: pointer;
-  text-align: left;
-  font-size: 0.95em;
+  text-align: center;
+  font-size: 0.85em;
   color: var(--text-button);
   transition: background-color 0.2s ease, color 0.2s ease;
 }
@@ -255,27 +346,29 @@ body {
 
 .toolbar-button:active {
   background-color: var(--bg-active);
-  transform: scale(0.98); /* Slight shrink effect */
-  transition: background-color 0.05s ease, transform 0.05s ease; /* Faster transition for active state */
+  transform: scale(0.98);
+  transition: background-color 0.05s ease, transform 0.05s ease;
 }
 
-.toolbar-button svg { /* Style for potential icons */
-  margin-right: 10px;
+.toolbar-button svg {
   width: 18px;
   height: 18px;
-  fill: currentColor; /* Icon color matches text */
+  fill: currentColor;
 }
 
-.toolbar-icon { /* Style for FontAwesome icons */
-  margin-right: 10px; /* Space between icon and text */
-  width: 16px; /* Adjust size as needed */
-  height: 16px;
-  vertical-align: middle; /* Align icon vertically with text */
-  color: inherit; /* Inherit color from button */
-  width: 18px; /* Consistent icon size */
+.toolbar-icon {
+  margin-right: 0;
+  margin-bottom: 4px;
+  width: 18px;
   height: 18px;
+  color: inherit;
 }
 
+.toolbar-button span {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
 
 /* Properties Panel Styles */
 .properties-panel-title {
@@ -300,79 +393,76 @@ body {
 
 .property-group input[type="text"],
 .property-group input[type="color"],
+.property-group input[type="number"], /* Added number type */
 .property-group select,
 .property-group textarea {
-  width: calc(100% - 16px); /* Account for padding/border */
+  width: calc(100% - 16px);
   padding: 8px;
   border: 1px solid var(--border-color);
-  background-color: var(--bg-input); /* Add background for inputs */
-  color: var(--text-primary); /* Add text color for inputs */
+  background-color: var(--bg-input);
+  color: var(--text-primary);
   border-radius: 4px;
   font-size: 0.9em;
   box-sizing: border-box;
 }
+/* Style number inputs specifically if needed */
+.property-group input[type="number"] {
+    width: 60px; /* Example smaller width */
+    margin-right: 5px;
+}
+
 
 .property-group textarea {
     min-height: 80px;
     resize: vertical;
 }
 
-/* React Flow Styles (Import these from the library itself) */
-/* You'll typically import reactflow/dist/style.css */
-/* Add custom node styles here if needed */
-.react-flow__node-default { /* Example custom node style */
+/* React Flow Styles */
+.react-flow__node-default {
   border: 1px solid var(--border-color-medium);
   padding: 15px;
   border-radius: 5px;
   background: var(--bg-node);
-  color: var(--text-primary); /* Add text color for nodes */
-  width: 180px; /* Example width */
-  min-height: 100px; /* Example height */
+  color: var(--text-primary);
+  width: 180px;
+  min-height: 100px;
   font-size: 12px;
   text-align: center;
   box-shadow: 0 2px 4px var(--shadow-node);
 }
 
-.react-flow__node-default.selected {
-    box-shadow: 0 0 0 2px var(--accent-color);
-}
+/* Remove CSS rule for selected node, handle styling inside the component */
+/* .react-flow__node-slideNode.selected { ... } */
 
 .react-flow__handle {
-    opacity: 0.6; /* Make handles less prominent */
+    opacity: 0.6;
 }
 
-/* Add transition to the base minimap class */
 .react-flow__minimap {
-    transition: right 0.3s ease-in-out !important; /* Apply transition to right property */
+    transition: right 0.3s ease-in-out !important;
 }
 
-/* Style for MiniMap offset when properties panel is visible */
-/* Ensure the selector targets the MiniMap component correctly */
 .react-flow__minimap.minimap-offset {
-  right: 300px !important; /* Use !important to override default inline styles if necessary. Adjust value based on panel width (280px) + desired spacing */
-  /* transition: right 0.3s ease-in-out !important; */ /* Removed transition from here */
+  right: 300px !important;
 }
 
-/* Custom Styles for React Flow Controls */
 .react-flow__controls {
-  padding: 6px !important; /* Reduced padding to decrease height */
-  border-radius: 16px !important; /* More rounded corners */
+  padding: 6px !important;
+  border-radius: 16px !important;
   background-color: var(--bg-secondary-translucent) !important;
   box-shadow: 0 4px 12px var(--shadow-color) !important;
-  bottom: 25px !important; /* Position slightly higher from bottom */
-  display: flex !important; /* Ensure horizontal layout */
+  bottom: 25px !important;
+  display: flex !important;
   align-items: center !important;
 }
 
-/* Style for default and custom buttons within controls */
 .react-flow__controls button,
-.react-flow__controls .react-flow__controls-button { /* Target custom button too */
-  width: 30px !important; /* Restore button size */
-  height: 30px !important; /* Restore button size */
-  /* font-size: 5.6em !important; */ /* Remove font-size control for icons */
-  margin: 0 6px !important; /* Increased spacing */
-  border-radius: 12px !important; /* More rounded buttons */
-  border: none !important; /* Remove default border */
+.react-flow__controls .react-flow__controls-button {
+  width: 30px !important;
+  height: 30px !important;
+  margin: 0 6px !important;
+  border-radius: 12px !important;
+  border: none !important;
   background-color: var(--bg-button) !important;
   color: var(--text-secondary) !important;
   box-shadow: 0 1px 3px var(--shadow-light) !important;
@@ -399,31 +489,39 @@ body {
   transform: none !important;
 }
 
-/* Directly style the SVG icon inside the controls buttons */
 .react-flow__controls button svg,
 .react-flow__controls .react-flow__controls-button svg {
-    max-width: 14px !important; /* Increased icon width */
-    max-height: 14px !important; /* Increased icon height */
+    max-width: 14px !important;
+    max-height: 14px !important;
 }
 
 /* Settings Button Styles */
 .settings-button {
   position: absolute;
-  bottom: 25px; /* Align with controls */
-  left: 20px; /* Position from left */
-  width: 40px; /* Match controls button size */
-  height: 40px; /* Match controls button size */
-  border-radius: 50%; /* Make it round */
-  background-color: var(--bg-button); /* Use button background */
+  bottom: 25px;
+  left: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--bg-button);
   border: none;
   box-shadow: 0 1px 3px var(--shadow-light) !important;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  z-index: 20; /* Above editor, same level as controls */
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  z-index: 20;
+  /* Define base transition (for sliding left/exit) */
+  transition: transform 0.2s ease, background-color 0.2s ease, left 0.3s linear;
   color: var(--text-secondary);
+}
+
+/* Shift settings button when layer panel is visible */
+.settings-button.shifted {
+  left: 270px; /* Original left (20px) + Layer panel width (250px) */
+  /* Override transition specifically for sliding right/enter */
+  transition: transform 0.2s ease, background-color 0.2s ease, left 0.2s ease-out; /* Faster slide-in */
+  /* The base transition (left 0.3s linear) will apply when this class is removed */
 }
 
 .settings-button:hover {
@@ -431,12 +529,12 @@ body {
 }
 
 .settings-button:active {
-   transform: scale(0.9); /* Slightly stronger active effect */
+   transform: scale(0.9);
    background-color: var(--bg-active) !important;
 }
 
-.settings-button svg { /* Style the icon inside */
-  width: 20px; /* Adjust icon size */
+.settings-button svg {
+  width: 20px;
   height: 20px;
 }
 
@@ -462,8 +560,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* Ensure modal is on top */
-  opacity: 0; /* Start hidden */
+  z-index: 1000;
+  opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0s linear 0.3s;
 }
@@ -476,20 +574,20 @@ body {
 
 
 .settings-modal-content {
-  background-color: var(--bg-secondary); /* Use secondary background for panels/modals */
+  background-color: var(--bg-secondary);
   padding: 25px 30px;
-  border-radius: 12px; /* Rounded corners */
-  box-shadow: 0 5px 15px var(--shadow-color); /* Use main shadow */
-  min-width: 400px; /* Minimum width */
-  max-width: 600px; /* Maximum width */
+  border-radius: 12px;
+  box-shadow: 0 5px 15px var(--shadow-color);
+  min-width: 400px;
+  max-width: 600px;
   z-index: 1001;
-  transform: scale(0.9); /* Start slightly scaled down */
+  transform: scale(0.9);
   opacity: 0;
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .settings-modal-overlay.open .settings-modal-content {
-    transform: scale(1); /* Scale up when open */
+    transform: scale(1);
     opacity: 1;
 }
 
@@ -523,17 +621,16 @@ body {
 }
 
 .settings-modal-body {
-  /* Add styles for modal content area */
-  min-height: 150px; /* Example min height */
+  min-height: 150px;
 }
 
 /* Styles for Settings Modal Content */
 .setting-group {
-  margin-bottom: 25px; /* Space between setting groups */
+  margin-bottom: 25px;
 }
 
 .setting-group:last-child {
-  margin-bottom: 0; /* No margin for the last group */
+  margin-bottom: 0;
 }
 
 .setting-group h4 {
@@ -545,7 +642,7 @@ body {
 }
 
 .setting-options-radio label {
-  display: inline-block; /* Align radio buttons horizontally */
+  display: inline-block;
   margin-right: 20px;
   cursor: pointer;
   font-size: 0.95em;
@@ -558,17 +655,17 @@ body {
 
 .setting-options-radio input[type="radio"] {
   margin-right: 6px;
-  vertical-align: middle; /* Align radio button with text */
+  vertical-align: middle;
 }
 
 .setting-select {
-  width: 100%; /* Make select boxes take full width */
+  width: 100%;
   padding: 10px 12px;
   border: 1px solid var(--border-color);
   border-radius: 6px;
   font-size: 0.95em;
   background-color: var(--bg-input);
-  color: var(--text-primary); /* Add text color */
+  color: var(--text-primary);
   box-sizing: border-box;
   cursor: pointer;
 }
@@ -580,14 +677,78 @@ body {
 }
 
 .version-info {
-  margin-top: 30px; /* Add space above version info */
+  margin-top: 30px;
   padding-top: 15px;
   border-top: 1px solid var(--border-color-light);
-  text-align: right; /* Align version to the right */
+  text-align: right;
   font-size: 0.85em;
   color: var(--text-tertiary);
 }
 
 .version-info p {
     margin: 0;
+}
+
+/* Custom Styles for react-resizable Handles - Smaller Circles, Higher Z-Index */
+.react-resizable-handle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: var(--accent-color);
+    border: 1px solid white;
+    border-radius: 50%;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    z-index: 20; /* Increase z-index */
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+}
+
+.react-resizable-handle:hover {
+    opacity: 1;
+}
+
+/* Position handles slightly outside the element */
+.react-resizable-handle-se {
+  bottom: -4px; /* Half the handle size */
+  right: -4px;
+  cursor: se-resize;
+}
+.react-resizable-handle-sw {
+  bottom: -4px;
+  left: -4px;
+  cursor: sw-resize;
+}
+.react-resizable-handle-ne {
+  top: -4px;
+  right: -4px;
+  cursor: ne-resize;
+}
+.react-resizable-handle-nw {
+  top: -4px;
+  left: -4px;
+  cursor: nw-resize;
+}
+.react-resizable-handle-e {
+  top: 50%;
+  margin-top: -4px; /* Center vertically */
+  right: -4px;
+  cursor: ew-resize;
+}
+.react-resizable-handle-w {
+  top: 50%;
+  margin-top: -4px;
+  left: -4px;
+  cursor: ew-resize;
+}
+.react-resizable-handle-n {
+  left: 50%;
+  margin-left: -4px; /* Center horizontally */
+  top: -4px;
+  cursor: ns-resize;
+}
+.react-resizable-handle-s {
+  left: 50%;
+  margin-left: -4px;
+  bottom: -4px;
+  cursor: ns-resize;
 }

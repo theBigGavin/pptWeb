@@ -20,7 +20,12 @@ A web-based visual editor for creating PowerPoint presentations using a node-bas
   - Save the current presentation state to browser local storage (`Save`).
   - Load the previously saved state from local storage (`Load`).
   - Export the visual layout directly into a `.pptx` file using PptxGenJS (`Export PPTX`). Slides are ordered based on their vertical position.
-  - Access application settings (`Settings` - currently a placeholder).
+  - Access application settings (`Settings`).
+- **Layer-Based Editing**:
+  - **Layer Panel**: Select a slide node to view its layers (background, title, text, media, etc.) in a hierarchical tree view on the left panel.
+  - **Properties Panel**: Select a layer in the Layer Panel to edit its specific properties (name, content, position, size, text format, media URL, etc.) on the right panel.
+  - **Direct Manipulation**: Directly drag layers within a slide node on the canvas to change their position. Select a layer to reveal resize handles and drag them to adjust its size.
+  - **Add Layers**: Add new text or image layers to the selected slide via buttons in the Layer Panel.
 - **PPTX Export**: Export your visual layout directly into a `.pptx` file. Slides are ordered based on their vertical position in the editor. Layouts and content from the properties panel are included.
 - **Local Storage Persistence**: Save your work in the browser and reload it later.
 - **Custom Controls & Minimap**: Enhanced canvas navigation with zoom controls, node focusing, and a minimap overview.

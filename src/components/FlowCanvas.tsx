@@ -1,54 +1,95 @@
-import React, { useState, useCallback, useEffect, useRef } from "react";
+import React, { useRef, useEffect, useState, useMemo } from "react"; // Import useMemo
 import {
-  // ReactFlowProvider, // Removed unused import
   Node,
   Edge,
   Connection,
-  addEdge,
-  useNodesState,
-  useEdgesState,
-  useReactFlow,
+  OnNodesChange,
+  OnEdgesChange,
+  OnConnect,
+  NodeMouseHandler,
+  // Removed unused imports like useNodesState, useEdgesState, addEdge etc.
 } from "reactflow";
 
 import Toolbar from "./Toolbar";
 import EditorArea from "./EditorArea";
 import PropertiesPanel from "./PropertiesPanel";
+import SettingsButton from "./SettingsButton";
+// Import types
+import { NodeData, SlideNode, Theme, Layer } from "../types";
 
-// Import types and utils
-import { NodeData, SlideNode, Theme } from "../types"; // Import Theme type
-import {
-  loadInitialState,
-  saveNodesToStorage,
-  saveEdgesToStorage,
-} from "../utils/storageUtils";
-import { getNodesInOrder, applyAutoLayout } from "../utils/nodeUtils";
-import { exportPresentation as exportPresentationUtil } from "../utils/exportUtils";
-import SettingsButton from "./SettingsButton"; // Import SettingsButton
-
-// Define props for FlowCanvas
+// Define the props type - Now receives state and handlers from App.tsx
 interface FlowCanvasProps {
+  nodes: Node<NodeData>[];
+  edges: Edge[];
+  onNodesChange: OnNodesChange;
+  onEdgesChange: OnEdgesChange;
+  onConnect: OnConnect;
   currentTheme: Theme;
   onThemeChange: (theme: Theme) => void;
+  onNodeSelect: NodeMouseHandler; // Correct signature
+  onCanvasClick: () => void;
+  isPropertiesPanelVisible: boolean;
+  selectedNode: SlideNode | null;
+  selectedLayerId: string | null;
+  updateLayerData: (nodeId: string, layerId: string, newLayerData: Partial<Layer>) => void;
+  deleteNode: (nodeId: string) => void;
+  addSlideNode: () => void;
+  handleAutoLayout: () => void;
+  handleExport: () => void;
+  isLayerPanelVisible: boolean;
+  setSelectedLayerId: React.Dispatch<React.SetStateAction<string | null>>; // Add setter prop type
 }
 
-// --- FlowCanvas Component ---
-function FlowCanvas({ currentTheme, onThemeChange }: FlowCanvasProps) { // Destructure props
-  const { initialNodes, initialEdges } = loadInitialState();
-  const [nodes, setNodes, onNodesChange] =
-    useNodesState<NodeData>(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  const [selectedNode, setSelectedNode] = useState<SlideNode | null>(null);
-  const reactFlowInstance = useReactFlow<NodeData>();
-  const flowWrapperRef = useRef<HTMLDivElement>(null); // Ref for the container
-  const [viewportSize, setViewportSize] = useState({ width: 0, height: 0 }); // State for viewport dimensions
+// --- FlowCanvas Component (Refactored) ---
+function FlowCanvas({
+  // Destructure all props received from App.tsx
+  nodes,
+  edges,
+  onNodesChange,
+  onEdgesChange,
+  onConnect,
+  currentTheme,
+  onThemeChange,
+  onNodeSelect,
+  onCanvasClick,
+  isPropertiesPanelVisible,
+  selectedNode,
+  selectedLayerId,
+  updateLayerData,
+  deleteNode,
+  addSlideNode,
+  handleAutoLayout,
+  handleExport,
+  isLayerPanelVisible,
+  setSelectedLayerId, // Destructure the setter
+}: FlowCanvasProps) {
 
-  // --- Get Viewport Dimensions ---
+  // --- Prepare Nodes with Extra Data ---
+  // Inject necessary functions and state into each node's data prop for SlideNode component
+  const nodesWithData = useMemo(() => {
+    return nodes.map(node => ({
+      ...node,
+      // Ensure data exists, even if minimal
+      data: {
+        ...(node.data || { label: '', layers: [] }), // Spread existing data or provide default
+        updateLayerData: updateLayerData,
+        setSelectedLayerId: setSelectedLayerId, // Pass the setter from App
+        nodeId: node.id, // Pass the node's own ID
+        selectedLayerId: selectedLayerId, // Pass the currently selected layer ID
+      }, // Remove the explicit type assertion here
+    }));
+  }, [nodes, updateLayerData, setSelectedLayerId, selectedLayerId]); // Ensure setter is in dependencies
+
+  // Keep viewport size logic if needed by EditorArea or Controls
+  const flowWrapperRef = useRef<HTMLDivElement>(null);
+  const [viewportSize, setViewportSize] = useState({ width: 0, height: 0 });
+
   useEffect(() => {
-    const currentRef = flowWrapperRef.current; // Capture ref value
+    const currentRef = flowWrapperRef.current;
+    if (!currentRef) return;
 
     const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
-        // Use const instead of let
         setViewportSize({
           width: entry.contentRect.width,
           height: entry.contentRect.height,
@@ -56,158 +97,62 @@ function FlowCanvas({ currentTheme, onThemeChange }: FlowCanvasProps) { // Destr
       }
     });
 
-    if (currentRef) {
-      resizeObserver.observe(currentRef);
-      // Initial size
-      setViewportSize({
-        width: currentRef.clientWidth,
-        height: currentRef.clientHeight,
-      });
-    }
+    resizeObserver.observe(currentRef);
+    setViewportSize({ width: currentRef.clientWidth, height: currentRef.clientHeight }); // Initial size
 
     return () => {
       if (currentRef) {
-        resizeObserver.unobserve(currentRef); // Cleanup observer on unmount
+        resizeObserver.unobserve(currentRef);
       }
     };
-  }, []); // Run only once on mount
+  }, []); // Empty dependency array ensures this runs only once on mount
 
-  // --- State Persistence ---
-  useEffect(() => {
-    saveNodesToStorage(nodes);
-  }, [nodes]);
+  // Remove all lifted state and callbacks:
+  // - useNodesState, useEdgesState
+  // - loadInitialState, saveNodesToStorage, saveEdgesToStorage
+  // - local selectedNode state
+  // - handleNodeClick, handlePaneClick (use onNodeSelect, onCanvasClick directly)
+  // - addSlideNode, updateNodeData, deleteNode, handleAutoLayout, handleExport (use props)
 
-  useEffect(() => {
-    saveEdgesToStorage(edges);
-  }, [edges]);
-
-  // --- Callbacks ---
-  const handleNodeClick = useCallback((event: React.MouseEvent, node: Node) => {
-    setSelectedNode(node as SlideNode);
-  }, []);
-
-  const handlePaneClick = useCallback(() => {
-    setSelectedNode(null);
-  }, []);
-
-  const addSlideNode = useCallback(() => {
-    const existingIds = nodes
-      .map((n) => parseInt(n.id, 10))
-      .filter((id) => !isNaN(id));
-    const nextIdNumber =
-      existingIds.length > 0 ? Math.max(...existingIds) + 1 : 1;
-    const newNodeId = nextIdNumber.toString();
-
-    const newNode: SlideNode = {
-      id: newNodeId,
-      type: "slideNode",
-      data: {
-        label: `PPT 页面 ${newNodeId}`,
-        content1: "新页面的内容...",
-        layout: "title_content",
-      },
-      position: {
-        x: 150,
-        y:
-          nodes.length > 0
-            ? Math.max(...nodes.map((n) => n.position.y)) + 230
-            : 100,
-      },
-    };
-    setNodes((nds) => nds.concat(newNode));
-
-    // Focus on the new node
-    setTimeout(() => {
-      reactFlowInstance.setCenter(
-        newNode.position.x + 160,
-        newNode.position.y + 90,
-        { zoom: 1, duration: 300 }
-      );
-    }, 50);
-  }, [nodes, setNodes, reactFlowInstance]);
-
-  const updateNodeData = useCallback(
-    (nodeId: string, newData: Partial<NodeData>) => {
-      setNodes((nds) =>
-        nds.map((node) => {
-          if (node.id === nodeId) {
-            const currentData = node.data || {};
-            return { ...node, data: { ...currentData, ...newData } };
-          }
-          return node;
-        })
-      );
-      if (selectedNode && selectedNode.id === nodeId) {
-        setSelectedNode((prev) =>
-          prev ? { ...prev, data: { ...(prev.data || {}), ...newData } } : null
-        );
-      }
-    },
-    [selectedNode, setNodes]
-  );
-
-  const onConnect = useCallback(
-    (params: Connection | Edge) => setEdges((eds) => addEdge(params, eds)),
-    [setEdges]
-  );
-
-  const deleteNode = useCallback(
-    (nodeId: string) => {
-      setNodes((nds) => nds.filter((node) => node.id !== nodeId));
-      setEdges((eds) =>
-        eds.filter((edge) => edge.source !== nodeId && edge.target !== nodeId)
-      );
-      setSelectedNode(null);
-    },
-    [setNodes, setEdges]
-  );
-
-  const handleAutoLayout = useCallback(() => {
-    const orderedNodes = getNodesInOrder(nodes, edges);
-    const layoutedNodes = applyAutoLayout(orderedNodes);
-    setNodes(layoutedNodes);
-  }, [nodes, edges, setNodes]);
-
-  const handleExport = useCallback(() => {
-    exportPresentationUtil(nodes, edges);
-  }, [nodes, edges]);
-
-  // --- Render ---
   return (
     <>
-      {" "}
-      {/* Use Fragment as the outer container is now App.tsx's div */}
+      {/* Toolbar now receives actions from props */}
       <Toolbar
         addSlide={addSlideNode}
         exportToPptx={handleExport}
         onAutoLayout={handleAutoLayout}
       />
-      {/* Add ref to the EditorArea container */}
       <div ref={flowWrapperRef} style={{ width: "100%", height: "100%" }}>
+        {/* EditorArea receives the modified nodes array */}
         <EditorArea
-          nodes={nodes}
+          nodes={nodesWithData} // Pass the enhanced nodes array
           edges={edges}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
-          onNodeClick={handleNodeClick}
-          onPaneClick={handlePaneClick}
-          isPanelVisible={selectedNode !== null}
-          selectedNode={selectedNode} // Pass selectedNode state
-          viewportSize={viewportSize} // Pass viewport size down
+          onNodeClick={onNodeSelect} // Pass the handler directly
+          onPaneClick={onCanvasClick} // Pass the handler directly
+          isPanelVisible={isPropertiesPanelVisible} // Pass visibility for MiniMap offset
+          selectedNode={selectedNode}
+          viewportSize={viewportSize}
         />
       </div>
-      {/* Pass theme props down to SettingsButton */}
-      <SettingsButton currentTheme={currentTheme} onThemeChange={onThemeChange} />
-      {/* Properties Panel with conditional visibility */}
+      <SettingsButton
+        currentTheme={currentTheme}
+        onThemeChange={onThemeChange}
+        isLayerPanelVisible={isLayerPanelVisible}
+      />
+      {/* Properties Panel container */}
       <div
         className={`properties-panel-container ${
-          selectedNode ? "visible" : ""
+          isPropertiesPanelVisible ? "visible" : ""
         }`}
       >
+        {/* PropertiesPanel receives state and handlers from props */}
         <PropertiesPanel
           selectedNode={selectedNode}
-          updateNodeData={updateNodeData}
+          selectedLayerId={selectedLayerId}
+          updateLayerData={updateLayerData}
           deleteNode={deleteNode}
         />
       </div>
@@ -215,5 +160,4 @@ function FlowCanvas({ currentTheme, onThemeChange }: FlowCanvasProps) { // Destr
   );
 }
 
-// Export FlowCanvas component
 export default FlowCanvas;

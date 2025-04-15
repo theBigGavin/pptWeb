@@ -8,8 +8,9 @@ import {
   faImage,
   faDesktop,
   faSave,
-  faChevronLeft, // Add missing icon import
-  faChevronRight, // Add missing icon import
+  faChevronLeft,
+  faChevronRight,
+  faBars, // Import faBars icon
 } from "@fortawesome/free-solid-svg-icons";
 
 // Define the props type, including the addSlide and export function
@@ -32,7 +33,9 @@ const Toolbar: React.FC<ToolbarProps> = ({
 
   return (
     <div className={`toolbar-container ${isCollapsed ? "collapsed" : ""}`}>
-      <h2 className="toolbar-title">工具栏</h2>
+      {/* <h2 className="toolbar-title">工具栏</h2> */} {/* Title is hidden via CSS */}
+      
+      {/* Menu is always visible, collapse state controlled by CSS */}
       <ul className="toolbar-menu">
         {/* Reordered Menu Items */}
         <li>
@@ -44,8 +47,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
               icon={faFile}
               className="toolbar-icon"
               title="新建 PPT"
-            />{" "}
-            {/* Add title for tooltip */}
+            />
             <span>新建 PPT</span>
           </button>
         </li>
@@ -119,12 +121,13 @@ const Toolbar: React.FC<ToolbarProps> = ({
         </li>
         {/* Add more tools as needed */}
       </ul>
+      {/* Toggle button always visible */}
       <button
         onClick={toggleCollapse}
         className="toolbar-toggle-button"
         title={isCollapsed ? "展开工具栏" : "折叠工具栏"}
       >
-        <FontAwesomeIcon icon={isCollapsed ? faChevronRight : faChevronLeft} />
+        <FontAwesomeIcon icon={faBars} /> {/* Use faBars icon */}
       </button>
     </div>
   );

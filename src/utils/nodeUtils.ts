@@ -50,15 +50,16 @@ export const getNodesInOrder = (nodesToSort: SlideNode[], edgesToSort: Edge[]): 
 };
 
 // Define fixed node height used in SlideNode.tsx for layout calculation
-const nodeHeight = 180; // TODO: Consider making this dynamic or passed in if node sizes vary
+const nodeWidth = 320; // Estimated width of a SlideNode
+const nodeHeight = 180; // Keep height for reference if needed later
 
-// Function to apply automatic vertical layout based on node order
+// Function to apply automatic horizontal layout based on node order
 export const applyAutoLayout = (orderedNodes: SlideNode[]): SlideNode[] => {
-  const verticalSpacing = 50; // Space between nodes
-  const initialX = 150; // Fixed X position
+  const horizontalSpacing = 80; // Space between nodes horizontally
+  const initialY = 100; // Fixed Y position for horizontal layout
 
   return orderedNodes.map((node, index) => ({
     ...node,
-    position: { x: initialX, y: index * (nodeHeight + verticalSpacing) },
+    position: { x: index * (nodeWidth + horizontalSpacing) + 50, y: initialY }, // Calculate X, fix Y
   }));
 };

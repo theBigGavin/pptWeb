@@ -1,9 +1,15 @@
 import { Edge } from 'reactflow'; // Removed unused Node import
-import { SlideNode } from '../types'; // Removed unused NodeData import
+import { SlideNode, Layer } from '../types'; // Import Layer type
 
 // --- Constants ---
 const LOCALSTORAGE_KEY_NODES = 'pptWebNodes';
 const LOCALSTORAGE_KEY_EDGES = 'pptWebEdges';
+
+// Define default layers for the initial node
+const defaultLayers: Layer[] = [
+  { id: `1-bg`, type: 'background', name: '背景', style: { backgroundColor: '#ffffff', width: '100%', height: '100%', zIndex: 0 } },
+  { id: `1-title`, type: 'title', name: '标题', content: `标题 1`, style: { top: '20px', left: '20px', width: 'calc(100% - 40px)', height: 'auto', zIndex: 1, fontSize: '24px', fontWeight: 'bold' }, textFormat: { textAlign: 'center' } },
+];
 
 const defaultInitialNodes: SlideNode[] = [
   {
@@ -11,10 +17,13 @@ const defaultInitialNodes: SlideNode[] = [
     type: "slideNode",
     data: {
       label: "PPT 页面 1",
-      content1: "这是第一页的内容...",
-      layout: "title_content",
+      layers: defaultLayers, // Use the new layers structure
     },
     position: { x: 100, y: 100 },
+    // Ensure width and height are set if SlideNode component relies on them
+    // These might come from the node type definition or be set dynamically
+    width: 320, // Match SlideNode style
+    height: 180, // Match SlideNode style
   },
 ];
 

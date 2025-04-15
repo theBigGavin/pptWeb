@@ -8,9 +8,10 @@ import { Theme } from "../types"; // Import Theme type
 interface SettingsButtonProps {
   currentTheme: Theme;
   onThemeChange: (theme: Theme) => void;
+  isLayerPanelVisible: boolean; // Add prop for layer panel visibility
 }
 
-const SettingsButton: React.FC<SettingsButtonProps> = ({ currentTheme, onThemeChange }) => { // Destructure props
+const SettingsButton: React.FC<SettingsButtonProps> = ({ currentTheme, onThemeChange, isLayerPanelVisible }) => { // Destructure new prop
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSpinning, setIsSpinning] = useState(false);
 
@@ -31,7 +32,7 @@ const SettingsButton: React.FC<SettingsButtonProps> = ({ currentTheme, onThemeCh
   return (
     <>
       <button
-        className={`settings-button ${isSpinning ? "spin" : ""}`}
+        className={`settings-button ${isSpinning ? "spin" : ""} ${isLayerPanelVisible ? "shifted" : ""}`} // Add 'shifted' class conditionally
         onClick={handleButtonClick}
         title="设置"
       >
