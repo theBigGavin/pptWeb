@@ -136,7 +136,7 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
           </div> */}
 
           <div className="property-group">
-            <label>布局:</label>
+            <label htmlFor="nodeLayout">布局:</label>
             <select
               id="nodeLayout"
               value={layout}

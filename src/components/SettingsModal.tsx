@@ -90,8 +90,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 
           {/* Language Selection */}
           <div className="setting-group">
-            <h4>界面语言</h4>
-            <select value={language} onChange={handleLanguageChange} className="setting-select">
+            {/* Use label and associate it with select using htmlFor and id */}
+            <label htmlFor="language-select">界面语言</label>
+            <select id="language-select" value={language} onChange={handleLanguageChange} className="setting-select">
               <option value="zh-CN">简体中文</option>
               <option value="en">English</option>
               <option value="ja">日本語</option>
@@ -102,8 +103,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 
           {/* LLM Configuration */}
           <div className="setting-group">
-            <h4>大模型接口</h4>
-            <select value={llmProvider} onChange={handleLlmChange} className="setting-select">
+            {/* Do the same for LLM select */}
+            <label htmlFor="llm-select">大模型接口</label>
+            <select id="llm-select" value={llmProvider} onChange={handleLlmChange} className="setting-select">
               <option value="deepseek">DeepSeek</option>
               <option value="openai">OpenAI</option>
               <option value="gemini">Google Gemini</option>

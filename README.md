@@ -65,6 +65,16 @@ yarn dev
 
 Open your browser and navigate to the URL provided (usually `http://localhost:5173`).
 
+### Running Tests
+
+To run the unit tests using Vitest:
+
+```bash
+yarn test
+```
+
+This will run the tests located in the `tests` directory in watch mode.
+
 ### Building for Production
 
 To create an optimized production build:
