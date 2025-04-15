@@ -12,6 +12,8 @@
 
 A web-based visual editor for creating PowerPoint presentations using a node-based interface. Built with React, TypeScript, Vite, React Flow, and PptxGenJS.
 
+![PPTWeb Interface](./public/PPTWEB.png)
+
 ## ✨ Features
 
 - **Visual Slide Editor**: Use a node-based interface (powered by React Flow) to add, arrange, and visualize your presentation slides.

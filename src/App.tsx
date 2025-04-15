@@ -339,7 +339,31 @@ const AppContent: React.FC = () => {
     }
   }, []); // No dependencies needed
 
-  // TODO: Implement deleteLayer function
+  const deleteLayer = useCallback(
+    (nodeId: string, layerId: string) => {
+      setNodes((nds) =>
+        nds.map((node) => {
+          if (node.id === nodeId && node.type === "slideNode") {
+            const slideNode = node as SlideNode;
+            const currentLayers = slideNode.data.layers || [];
+            const updatedLayers = currentLayers.filter(
+              (layer) => layer.id !== layerId
+            );
+            // If the deleted layer was selected, deselect it
+            if (selectedLayerId === layerId) {
+              setSelectedLayerId(null);
+            }
+            return {
+              ...slideNode,
+              data: { ...slideNode.data, layers: updatedLayers },
+            };
+          }
+          return node;
+        })
+      );
+    },
+    [setNodes, selectedLayerId, setSelectedLayerId] // Add dependencies
+  );
 
   const addLayer = useCallback(
     (nodeId: string, layerType: LayerType) => {
@@ -447,6 +471,7 @@ const AppContent: React.FC = () => {
         selectedLayerId={selectedLayerId}
         updateLayerData={updateLayerData}
         deleteNode={deleteNode}
+        deleteLayer={deleteLayer} // Pass deleteLayer down
         addSlideNode={addSlideNode}
         handleAutoLayout={handleAutoLayout}
         handleExport={handleExport}

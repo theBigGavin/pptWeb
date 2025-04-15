@@ -24,7 +24,8 @@
 }
 
 .react-flow__minimap.minimap-offset {
-  right: 300px !important;
+  /* Adjust offset to match the new panel width + some spacing */
+  right: 420px !important; /* 400px panel + 20px spacing */
 }
 
 .react-flow__controls {

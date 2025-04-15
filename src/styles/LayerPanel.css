@@ -3,86 +3,98 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 250px;
-  left: -250px;
-  background-color: var(--bg-secondary);
-  border-right: 1px solid var(--border-color-light);
+  width: 240px; /* Slightly narrower */
+  left: -240px;
+  background-color: var(--figma-panel-bg); /* Use Figma variable */
+  border-right: 1px solid var(--figma-panel-border); /* Use Figma variable */
   overflow: hidden;
   /* Define base transition (for sliding out/left) */
-  transition: left 0.3s linear;
+  transition: left 0.25s ease-out; /* Slightly faster transition */
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   height: 100%;
   padding: 0;
   z-index: 15;
-  box-shadow: 2px 0 8px var(--shadow-light);
+  box-shadow: var(--figma-panel-shadow); /* Use Figma variable */
 }
 
 .layer-panel.visible { /* Combined selector */
   left: 0;
   /* Override transition specifically for sliding in/right */
-  transition: left 0.2s ease-out; /* Faster slide-in */
+  transition: left 0.2s ease-out; /* Keep faster slide-in */
 }
 
 /* Target h3 within the layer panel */
 .layer-panel h3 {
-  padding: 10px 15px;
+  padding: 8px 12px; /* Reduced padding */
   margin: 0;
-  border-bottom: 1px solid var(--border-color-light);
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--text-secondary);
+  border-bottom: 1px solid var(--figma-separator); /* Use Figma variable */
+  font-size: 0.8rem; /* Smaller font size */
+  font-weight: 500; /* Lighter font weight */
+  color: var(--figma-text-secondary); /* Use Figma variable */
+  text-transform: uppercase; /* Uppercase like Figma */
+  letter-spacing: 0.5px; /* Slight letter spacing */
   flex-shrink: 0;
   box-sizing: border-box;
 }
 
 /* Style for the react-arborist tree container within the panel */
+/* Note: The direct child selector '>' might be too specific if the DOM structure changes.
+   Consider using a class like .tree-wrapper if possible. */
 .layer-panel > div[role="tree"] {
   flex-grow: 1;
   overflow-y: auto;
   overflow-x: hidden;
   width: 100% !important;
   height: auto !important;
-  padding: 5px;
+  padding: 0; /* Remove padding here, handled by .tree-wrapper */
   box-sizing: border-box;
 }
 
 /* Styles for react-arborist nodes */
 .react-arborist-node {
   cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 4px;
-  margin-bottom: 2px;
-  font-size: 0.9em;
-  color: var(--text-secondary);
+  padding: 3px 6px; /* Reduced padding */
+  border-radius: 3px; /* Slightly smaller radius */
+  margin-bottom: 1px; /* Tighter spacing */
+  font-size: 0.85em; /* Slightly smaller font */
+  color: var(--figma-text-secondary); /* Use Figma variable */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: flex; /* Use flex for alignment */
+  align-items: center; /* Center icon and text vertically */
 }
 
 .react-arborist-node:hover {
-  background-color: var(--bg-hover);
-  color: var(--text-primary);
+  background-color: var(--figma-bg-hover); /* Use Figma variable */
+  color: var(--figma-text-primary); /* Use Figma variable */
 }
 
-.react-arborist-node-selected > div > div {
-  background-color: var(--accent-color) !important;
-  color: var(--text-inverted) !important;
-  border-radius: 4px;
+/* Target the inner div directly for selected state */
+.react-arborist-node-selected > div > .react-arborist-node {
+  background-color: var(--figma-bg-selected) !important; /* Use Figma variable */
+  color: var(--figma-text-selected) !important; /* Use Figma variable */
+  border-radius: 3px;
 }
-.react-arborist-node-selected:hover > div > div {
-   background-color: var(--accent-color) !important;
+/* Keep hover style consistent for selected */
+.react-arborist-node-selected:hover > div > .react-arborist-node {
+   background-color: var(--figma-bg-selected) !important;
+   color: var(--figma-text-selected) !important;
 }
 
-.react-arborist-node-focused > div > div {
-  outline: 1px dashed var(--accent-color);
-  outline-offset: -2px;
+/* Adjust focus style - maybe remove or use a subtle outline */
+.react-arborist-node-focused > div > .react-arborist-node {
+  /* outline: 1px solid var(--figma-accent); */ /* Optional: Figma often doesn't use strong focus outlines here */
+  /* outline-offset: -1px; */
+  box-shadow: inset 0 0 0 1px var(--figma-accent); /* Subtle inset shadow for focus */
 }
+
 
 /* Ensure the drop cursor is visible */
 .react-arborist-drop-cursor {
-    background-color: var(--accent-color);
+    background-color: var(--figma-accent); /* Use Figma variable */
     height: 2px;
 }
 
@@ -99,7 +111,7 @@
     top: -15px; /* Adjust based on line height if needed */
     bottom: 0;
     width: 1px;
-    background-color: var(--border-color-light);
+    background-color: var(--figma-separator); /* Use Figma variable */
     z-index: -1; /* Ensure it's behind the content */
 }
 
@@ -115,32 +127,39 @@
 
 /* Styles for the action buttons container */
 .layer-panel-actions { /* Renamed class */
-  padding: 10px;
-  border-top: 1px solid var(--border-color-light);
+  padding: 8px 12px; /* Reduced padding */
+  border-top: 1px solid var(--figma-separator); /* Use Figma variable */
   display: flex;
-  gap: 8px;
+  gap: 6px; /* Reduced gap */
   flex-shrink: 0; /* Prevent shrinking */
+  background-color: var(--figma-panel-bg); /* Match panel background */
 }
 
 /* Style buttons within the actions container */
 .layer-panel-actions button {
-  padding: 6px 12px;
-  border: 1px solid var(--border-color);
-  background-color: var(--bg-tertiary);
-  color: var(--text-secondary);
+  padding: 4px 10px; /* Reduced padding */
+  border: none; /* Remove border */
+  background-color: var(--figma-button-bg); /* Use Figma variable */
+  color: var(--figma-button-text); /* Use Figma variable */
   border-radius: 4px;
   cursor: pointer;
-  font-size: 0.85em;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  font-size: 0.8em; /* Smaller font */
+  transition: background-color 0.15s ease, color 0.15s ease;
+  display: flex; /* Align icon and text if needed later */
+  align-items: center;
+  justify-content: center;
 }
 
 .layer-panel-actions button:hover {
-  background-color: var(--bg-hover);
-  color: var(--text-primary);
+  background-color: var(--figma-button-hover-bg); /* Use Figma variable */
+  color: var(--figma-text-primary); /* Use Figma variable */
 }
 
 /* Style for the Tree component wrapper */
 .tree-wrapper {
-  padding: 10px;
-  box-sizing: border-box; /* Ensure padding is included in the element's total width and height */
+  padding: 8px; /* Reduced padding */
+  flex-grow: 1; /* Allow wrapper to grow */
+  overflow-y: auto; /* Enable vertical scroll */
+  overflow-x: hidden; /* Hide horizontal scroll */
+  box-sizing: border-box; /* Ensure padding is included */
 }

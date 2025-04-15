@@ -27,6 +27,21 @@
   --overlay-bg: rgba(0, 0, 0, 0.5); /* Modal overlay */
   --scrollbar-thumb: #c1c1c1;
   --scrollbar-track: var(--bg-primary);
+
+  /* Figma-like Styles (Light Theme) */
+  --figma-panel-bg: #ffffff;
+  --figma-panel-border: #e6e6e6;
+  --figma-panel-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 0 1px rgba(0, 0, 0, 0.08);
+  --figma-text-primary: #1f2328;
+  --figma-text-secondary: #636c76;
+  --figma-text-selected: #ffffff;
+  --figma-bg-hover: #f5f5f5;
+  --figma-bg-selected: #0d99ff;
+  --figma-accent: #0d99ff;
+  --figma-button-bg: transparent;
+  --figma-button-hover-bg: #f0f0f0;
+  --figma-button-text: var(--figma-text-secondary);
+  --figma-separator: #e6e6e6;
 }
 
 body[data-theme="dark"] {
@@ -57,6 +72,21 @@ body[data-theme="dark"] {
   --overlay-bg: rgba(0, 0, 0, 0.7);
   --scrollbar-thumb: #555;
   --scrollbar-track: var(--bg-primary);
+
+  /* Figma-like Styles (Dark Theme) */
+  --figma-panel-bg: #2c2c2c;
+  --figma-panel-border: #3a3a3a;
+  --figma-panel-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 0 1px rgba(0, 0, 0, 0.3);
+  --figma-text-primary: #e0e0e0;
+  --figma-text-secondary: #a0a0a0;
+  --figma-text-selected: #ffffff;
+  --figma-bg-hover: #383838;
+  --figma-bg-selected: #0d99ff;
+  --figma-accent: #0d99ff;
+  --figma-button-bg: transparent;
+  --figma-button-hover-bg: #404040;
+  --figma-button-text: var(--figma-text-secondary);
+  --figma-separator: #3a3a3a;
 }
 
 /* Global Resets and Base Styles */

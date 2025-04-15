@@ -46,6 +46,7 @@ interface FlowCanvasProps {
   // Add panel visibility setters
   setIsLayerPanelVisible: React.Dispatch<React.SetStateAction<boolean>>;
   setIsPropertiesPanelVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  deleteLayer: (nodeId: string, layerId: string) => void; // Add deleteLayer prop
 }
 
 // --- FlowCanvas Component (Refactored) ---
@@ -74,6 +75,7 @@ function FlowCanvas({
   // Destructure panel visibility setters
   setIsLayerPanelVisible,
   setIsPropertiesPanelVisible,
+  deleteLayer, // Destructure deleteLayer
 }: FlowCanvasProps) {
   // --- Prepare Nodes with Extra Data ---
   // Inject necessary functions and state into each node's data prop for SlideNode component
@@ -179,6 +181,7 @@ function FlowCanvas({
           selectedLayerId={selectedLayerId}
           updateLayerData={updateLayerData}
           deleteNode={deleteNode}
+          deleteLayer={deleteLayer} // Pass deleteLayer to PropertiesPanel
         />
       </div>
     </>

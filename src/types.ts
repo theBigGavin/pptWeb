@@ -19,7 +19,14 @@ export interface BaseLayer {
   id: string;
   type: LayerType;
   name: string; // User-friendly name for the layer panel
-  style: React.CSSProperties; // Includes position (left, top), size (width, height), zIndex, background, etc.
+  // Use React.CSSProperties, which includes standard background properties.
+  // Add specific optional types if needed for stricter checking or less common props.
+  style: React.CSSProperties & {
+    // Explicitly allow background blend mode if not already in CSSProperties type
+    backgroundBlendMode?: React.CSSProperties['backgroundBlendMode'];
+    // Add other less common properties if needed
+  };
+  // Removed fills array: fills?: FillLayer[];
 }
 
 // 3. Define auxiliary types for complex properties
@@ -27,10 +34,11 @@ export interface TextFormat {
   fontSize?: string | number;
   color?: string;
   fontWeight?: string | number;
-  fontStyle?: string;
-  textAlign?: 'left' | 'center' | 'right' | 'justify';
+  fontStyle?: string; // e.g., 'italic'
+  textAlign?: 'left' | 'center' | 'right' | 'justify'; // Horizontal alignment
+  verticalAlign?: 'flex-start' | 'center' | 'flex-end'; // Vertical alignment (using flexbox)
   textDecoration?: string; // e.g., 'underline', 'line-through'
-  fontFamily?: string;
+  fontFamily?: string; // Font family name
   lineHeight?: string | number;
   // Add more text formatting options as needed
 }
@@ -45,7 +53,6 @@ export interface TableStyle {
 export interface BackgroundLayer extends BaseLayer {
   type: 'background';
   // Background is primarily controlled by style.backgroundColor or style.backgroundImage
-  // No extra content needed here, but could add properties like 'gradient' later
 }
 
 export interface TitleLayer extends BaseLayer {
@@ -92,8 +99,9 @@ export interface TableLayer extends BaseLayer {
 export interface ChartLayer extends BaseLayer {
   type: 'chart';
   chartType: string; // e.g., 'bar', 'line', 'pie'
-  chartData: any; // Data structure depends on the charting library used
-  chartOptions?: any; // Options specific to the charting library
+  // Use a more specific type than 'any' if possible, otherwise use a general object/array type
+  chartData: Record<string, unknown> | unknown[]; // Data structure depends on the charting library used
+  chartOptions?: Record<string, unknown>; // Options specific to the charting library
 }
 
 // 5. Create the discriminated union type for Layer
@@ -113,9 +121,6 @@ export type Layer =
 export interface NodeData {
   label: string; // Slide title/name (used in Flow node & LayerPanel root)
   layers: Layer[]; // The core data defining the slide's content and appearance
-  // Remove width/height if they are now implicitly defined by a background layer or canvas size
-  // width?: number;
-  // height?: number;
 }
 
 // 7. Keep the SlideNode type definition

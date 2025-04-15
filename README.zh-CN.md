@@ -12,6 +12,8 @@
 
 一个基于 Web 的可视化 PowerPoint 演示文稿编辑器，使用基于节点的界面进行创建。采用 React、TypeScript、Vite、React Flow 和 PptxGenJS 构建。
 
+![PPTWeb Interface](./public/PPTWEB.png)
+
 ## ✨ 功能特性
 
 - **可视化幻灯片编辑**: 使用基于节点的界面（由 React Flow 驱动）来添加、排列和可视化您的演示文稿幻灯片。
