@@ -8,6 +8,7 @@ import {
   faImage,
   faDesktop,
   faSave,
+  faTrash, // Import trash icon
   // faChevronLeft, // Removed unused
   // faChevronRight, // Removed unused
   faBars, // Import faBars icon
@@ -18,12 +19,14 @@ interface ToolbarProps {
   addSlide: () => void;
   exportToPptx: () => void;
   onAutoLayout: () => void; // Add the auto layout function prop
+  onClearStorage: () => void; // Add the clear storage function prop
 }
 
 const Toolbar: React.FC<ToolbarProps> = ({
   addSlide,
   exportToPptx,
   onAutoLayout,
+  onClearStorage, // Destructure the clear storage handler
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(true); // Start collapsed
 
@@ -33,8 +36,8 @@ const Toolbar: React.FC<ToolbarProps> = ({
 
   return (
     <div className={`toolbar-container ${isCollapsed ? "collapsed" : ""}`}>
-      {/* <h2 className="toolbar-title">工具栏</h2> */} {/* Title is hidden via CSS */}
-      
+      {/* <h2 className="toolbar-title">工具栏</h2> */}{" "}
+      {/* Title is hidden via CSS */}
       {/* Menu is always visible, collapse state controlled by CSS */}
       <ul className="toolbar-menu">
         {/* Reordered Menu Items */}
@@ -66,6 +69,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
             <FontAwesomeIcon
               icon={faWandMagicSparkles}
               className="toolbar-icon"
+              title="自动布局"
             />
             <span>自动布局</span>
           </button>
@@ -117,6 +121,22 @@ const Toolbar: React.FC<ToolbarProps> = ({
               title="导出 PPTX"
             />
             <span>导出 PPTX</span>
+          </button>
+        </li>
+        <li>
+          {" "}
+          {/* Add Clear Storage Button */}
+          <button
+            className="toolbar-button"
+            onClick={onClearStorage}
+            style={{ color: "var(--danger-color)" }}
+          >
+            <FontAwesomeIcon
+              icon={faTrash}
+              className="toolbar-icon"
+              title="清除缓存"
+            />
+            <span>清除缓存</span>
           </button>
         </li>
         {/* Add more tools as needed */}

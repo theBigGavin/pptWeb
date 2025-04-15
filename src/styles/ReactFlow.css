@@ -1,0 +1,77 @@
+/* React Flow Styles */
+.react-flow__node-default {
+  border: 1px solid var(--border-color-medium);
+  padding: 15px;
+  border-radius: 5px;
+  background: var(--bg-node);
+  color: var(--text-primary);
+  width: 180px;
+  min-height: 100px;
+  font-size: 12px;
+  text-align: center;
+  box-shadow: 0 2px 4px var(--shadow-node);
+}
+
+/* Remove CSS rule for selected node, handle styling inside the component */
+/* .react-flow__node-slideNode.selected { ... } */
+
+.react-flow__handle {
+    opacity: 0.6;
+}
+
+.react-flow__minimap {
+    transition: right 0.3s ease-in-out !important;
+}
+
+.react-flow__minimap.minimap-offset {
+  right: 300px !important;
+}
+
+.react-flow__controls {
+  padding: 6px !important;
+  border-radius: 16px !important;
+  background-color: var(--bg-secondary-translucent) !important;
+  box-shadow: 0 4px 12px var(--shadow-color) !important;
+  bottom: 25px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.react-flow__controls button,
+.react-flow__controls .react-flow__controls-button {
+  width: 30px !important;
+  height: 30px !important;
+  margin: 0 6px !important;
+  border-radius: 12px !important;
+  border: none !important;
+  background-color: var(--bg-button) !important;
+  color: var(--text-secondary) !important;
+  box-shadow: 0 1px 3px var(--shadow-light) !important;
+  transition: background-color 0.2s ease, transform 0.1s ease !important;
+}
+
+.react-flow__controls button:hover,
+.react-flow__controls .react-flow__controls-button:hover {
+  background-color: var(--bg-hover) !important;
+}
+
+.react-flow__controls button:active,
+.react-flow__controls .react-flow__controls-button:active {
+  background-color: var(--bg-active) !important;
+  transform: scale(0.95) !important;
+}
+
+.react-flow__controls button:disabled,
+.react-flow__controls .react-flow__controls-button:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  background-color: var(--bg-button) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.react-flow__controls button svg,
+.react-flow__controls .react-flow__controls-button svg {
+    max-width: 14px !important;
+    max-height: 14px !important;
+}

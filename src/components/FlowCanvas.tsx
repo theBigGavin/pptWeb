@@ -19,7 +19,7 @@ import { NodeData, SlideNode, Theme, Layer } from "../types";
 
 // Define the props type - Now receives state and handlers from App.tsx
 interface FlowCanvasProps {
-  nodes: Node<NodeData>[];
+  nodes: Node<NodeData>[]; // Use Node<NodeData>
   edges: Edge[];
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
@@ -29,15 +29,23 @@ interface FlowCanvasProps {
   onNodeSelect: NodeMouseHandler; // Correct signature
   onCanvasClick: () => void;
   isPropertiesPanelVisible: boolean;
-  selectedNode: SlideNode | null;
+  selectedNode: SlideNode | null; // Keep SlideNode here as it's what PropertiesPanel expects
   selectedLayerId: string | null;
-  updateLayerData: (nodeId: string, layerId: string, newLayerData: Partial<Layer>) => void;
+  updateLayerData: (
+    nodeId: string,
+    layerId: string,
+    newLayerData: Partial<Layer>
+  ) => void;
   deleteNode: (nodeId: string) => void;
   addSlideNode: () => void;
   handleAutoLayout: () => void;
   handleExport: () => void;
+  handleClearStorage: () => void; // Add clear storage handler prop
   isLayerPanelVisible: boolean;
   setSelectedLayerId: React.Dispatch<React.SetStateAction<string | null>>; // Add setter prop type
+  // Add panel visibility setters
+  setIsLayerPanelVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsPropertiesPanelVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 // --- FlowCanvas Component (Refactored) ---
@@ -60,25 +68,38 @@ function FlowCanvas({
   addSlideNode,
   handleAutoLayout,
   handleExport,
+  handleClearStorage, // Destructure clear storage handler
   isLayerPanelVisible,
   setSelectedLayerId, // Destructure the setter
+  // Destructure panel visibility setters
+  setIsLayerPanelVisible,
+  setIsPropertiesPanelVisible,
 }: FlowCanvasProps) {
-
   // --- Prepare Nodes with Extra Data ---
   // Inject necessary functions and state into each node's data prop for SlideNode component
   const nodesWithData = useMemo(() => {
-    return nodes.map(node => ({
+    return nodes.map((node) => ({
       ...node,
       // Ensure data exists, even if minimal
       data: {
-        ...(node.data || { label: '', layers: [] }), // Spread existing data or provide default
+        ...(node.data || { label: "", layers: [] }), // Spread existing data or provide default
         updateLayerData: updateLayerData,
         setSelectedLayerId: setSelectedLayerId, // Pass the setter from App
         nodeId: node.id, // Pass the node's own ID
         selectedLayerId: selectedLayerId, // Pass the currently selected layer ID
-      }, // Remove the explicit type assertion here
+        // Pass panel visibility setters into node data
+        setIsLayerPanelVisible: setIsLayerPanelVisible,
+        setIsPropertiesPanelVisible: setIsPropertiesPanelVisible,
+      },
     }));
-  }, [nodes, updateLayerData, setSelectedLayerId, selectedLayerId]); // Ensure setter is in dependencies
+  }, [
+    nodes,
+    updateLayerData,
+    setSelectedLayerId,
+    selectedLayerId,
+    setIsLayerPanelVisible,
+    setIsPropertiesPanelVisible,
+  ]); // Add panel setters to dependencies
 
   // Keep viewport size logic if needed by EditorArea or Controls
   const flowWrapperRef = useRef<HTMLDivElement>(null);
@@ -98,7 +119,10 @@ function FlowCanvas({
     });
 
     resizeObserver.observe(currentRef);
-    setViewportSize({ width: currentRef.clientWidth, height: currentRef.clientHeight }); // Initial size
+    setViewportSize({
+      width: currentRef.clientWidth,
+      height: currentRef.clientHeight,
+    }); // Initial size
 
     return () => {
       if (currentRef) {
@@ -121,6 +145,7 @@ function FlowCanvas({
         addSlide={addSlideNode}
         exportToPptx={handleExport}
         onAutoLayout={handleAutoLayout}
+        onClearStorage={handleClearStorage} // Pass clear storage handler
       />
       <div ref={flowWrapperRef} style={{ width: "100%", height: "100%" }}>
         {/* EditorArea receives the modified nodes array */}

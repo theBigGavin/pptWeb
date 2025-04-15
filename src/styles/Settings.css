@@ -1,0 +1,193 @@
+/* Settings Button Styles */
+.settings-button {
+  position: absolute;
+  bottom: 25px;
+  left: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--bg-button);
+  border: none;
+  box-shadow: 0 1px 3px var(--shadow-light) !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 20;
+  /* Define base transition (for sliding left/exit) */
+  transition: transform 0.2s ease, background-color 0.2s ease, left 0.3s linear;
+  color: var(--text-secondary);
+}
+
+/* Shift settings button when layer panel is visible */
+.settings-button.shifted {
+  left: 270px; /* Original left (20px) + Layer panel width (250px) */
+  /* Override transition specifically for sliding right/enter */
+  transition: transform 0.2s ease, background-color 0.2s ease, left 0.2s ease-out; /* Faster slide-in */
+  /* The base transition (left 0.3s linear) will apply when this class is removed */
+}
+
+.settings-button:hover {
+  background-color: var(--bg-hover) !important;
+}
+
+.settings-button:active {
+   transform: scale(0.9);
+   background-color: var(--bg-active) !important;
+}
+
+.settings-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Spinning animation */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.settings-button.spin svg {
+  animation: spin 0.5s linear;
+}
+
+
+/* Settings Modal Styles */
+.settings-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--overlay-bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+}
+
+.settings-modal-overlay.open {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0s linear 0s;
+}
+
+
+.settings-modal-content {
+  background-color: var(--bg-secondary);
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px var(--shadow-color);
+  min-width: 400px;
+  max-width: 600px;
+  z-index: 1001;
+  transform: scale(0.9);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.settings-modal-overlay.open .settings-modal-content {
+    transform: scale(1);
+    opacity: 1;
+}
+
+
+.settings-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color-light);
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.settings-modal-header h3 {
+  margin: 0;
+  font-size: 1.4em;
+  color: var(--text-primary);
+}
+
+.settings-modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  cursor: pointer;
+  color: var(--text-tertiary);
+  padding: 0;
+  line-height: 1;
+}
+.settings-modal-close-btn:hover {
+    color: var(--text-primary);
+}
+
+.settings-modal-body {
+  min-height: 150px;
+}
+
+/* Styles for Settings Modal Content */
+.setting-group {
+  margin-bottom: 25px;
+}
+
+.setting-group:last-child {
+  margin-bottom: 0;
+}
+
+.setting-group h4 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.1em;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.setting-options-radio label {
+  display: inline-block;
+  margin-right: 20px;
+  cursor: pointer;
+  font-size: 0.95em;
+  color: var(--text-primary);
+}
+
+.setting-options-radio label:last-child {
+  margin-right: 0;
+}
+
+.setting-options-radio input[type="radio"] {
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.setting-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 0.95em;
+  background-color: var(--bg-input);
+  color: var(--text-primary);
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.setting-select:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px var(--accent-focus-shadow);
+}
+
+.version-info {
+  margin-top: 30px;
+  padding-top: 15px;
+  border-top: 1px solid var(--border-color-light);
+  text-align: right;
+  font-size: 0.85em;
+  color: var(--text-tertiary);
+}
+
+.version-info p {
+    margin: 0;
+}

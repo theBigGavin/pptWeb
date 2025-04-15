@@ -1,0 +1,63 @@
+/* Custom Styles for react-resizable Handles - Smaller Circles, Higher Z-Index */
+.react-resizable-handle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: var(--accent-color);
+    border: 1px solid white;
+    border-radius: 50%;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    z-index: 20; /* Increase z-index */
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+}
+
+.react-resizable-handle:hover {
+    opacity: 1;
+}
+
+/* Position handles slightly outside the element */
+.react-resizable-handle-se {
+  bottom: -4px; /* Half the handle size */
+  right: -4px;
+  cursor: se-resize;
+}
+.react-resizable-handle-sw {
+  bottom: -4px;
+  left: -4px;
+  cursor: sw-resize;
+}
+.react-resizable-handle-ne {
+  top: -4px;
+  right: -4px;
+  cursor: ne-resize;
+}
+.react-resizable-handle-nw {
+  top: -4px;
+  left: -4px;
+  cursor: nw-resize;
+}
+.react-resizable-handle-e {
+  top: 50%;
+  margin-top: -4px; /* Center vertically */
+  right: -4px;
+  cursor: ew-resize;
+}
+.react-resizable-handle-w {
+  top: 50%;
+  margin-top: -4px;
+  left: -4px;
+  cursor: ew-resize;
+}
+.react-resizable-handle-n {
+  left: 50%;
+  margin-left: -4px; /* Center horizontally */
+  top: -4px;
+  cursor: ns-resize;
+}
+.react-resizable-handle-s {
+  left: 50%;
+  margin-left: -4px;
+  bottom: -4px;
+  cursor: ns-resize;
+}

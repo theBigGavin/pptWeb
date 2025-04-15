@@ -1,0 +1,146 @@
+/* Layer Panel Styles - Regular CSS */
+.layer-panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 250px;
+  left: -250px;
+  background-color: var(--bg-secondary);
+  border-right: 1px solid var(--border-color-light);
+  overflow: hidden;
+  /* Define base transition (for sliding out/left) */
+  transition: left 0.3s linear;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0;
+  z-index: 15;
+  box-shadow: 2px 0 8px var(--shadow-light);
+}
+
+.layer-panel.visible { /* Combined selector */
+  left: 0;
+  /* Override transition specifically for sliding in/right */
+  transition: left 0.2s ease-out; /* Faster slide-in */
+}
+
+/* Target h3 within the layer panel */
+.layer-panel h3 {
+  padding: 10px 15px;
+  margin: 0;
+  border-bottom: 1px solid var(--border-color-light);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+/* Style for the react-arborist tree container within the panel */
+.layer-panel > div[role="tree"] {
+  flex-grow: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100% !important;
+  height: auto !important;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+/* Styles for react-arborist nodes */
+.react-arborist-node {
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-bottom: 2px;
+  font-size: 0.9em;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.react-arborist-node:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.react-arborist-node-selected > div > div {
+  background-color: var(--accent-color) !important;
+  color: var(--text-inverted) !important;
+  border-radius: 4px;
+}
+.react-arborist-node-selected:hover > div > div {
+   background-color: var(--accent-color) !important;
+}
+
+.react-arborist-node-focused > div > div {
+  outline: 1px dashed var(--accent-color);
+  outline-offset: -2px;
+}
+
+/* Ensure the drop cursor is visible */
+.react-arborist-drop-cursor {
+    background-color: var(--accent-color);
+    height: 2px;
+}
+
+/* Style for react-arborist indentation guides */
+.react-arborist-node-container {
+    position: relative;
+}
+
+/* Style the pseudo-element as the guide line */
+.react-arborist-node-container > div[role="treeitem"]::before {
+    content: '';
+    position: absolute;
+    left: 12px;
+    top: -15px; /* Adjust based on line height if needed */
+    bottom: 0;
+    width: 1px;
+    background-color: var(--border-color-light);
+    z-index: -1; /* Ensure it's behind the content */
+}
+
+/* Hide the guide line for the top-level nodes */
+.layer-panel > div[role="tree"] > div > .react-arborist-node-container > div[role="treeitem"]::before {
+    display: none;
+}
+
+/* Adjust line height/position if needed */
+.react-arborist-node-container > div[role="treeitem"] {
+    position: relative; /* Needed for the pseudo-element positioning */
+}
+
+/* Styles for the action buttons container */
+.layer-panel-actions { /* Renamed class */
+  padding: 10px;
+  border-top: 1px solid var(--border-color-light);
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+/* Style buttons within the actions container */
+.layer-panel-actions button {
+  padding: 6px 12px;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85em;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.layer-panel-actions button:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+/* Style for the Tree component wrapper */
+.tree-wrapper {
+  padding: 10px;
+  box-sizing: border-box; /* Ensure padding is included in the element's total width and height */
+}

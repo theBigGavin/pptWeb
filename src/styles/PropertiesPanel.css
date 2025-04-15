@@ -1,0 +1,65 @@
+.properties-panel-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 280px;
+  right: -280px;
+  background-color: var(--bg-secondary);
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  box-shadow: -3px 0 8px var(--shadow-light);
+  transition: right 0.3s ease-in-out;
+  z-index: 10;
+}
+
+.properties-panel-container.visible {
+  right: 0;
+}
+
+/* Properties Panel Styles */
+.properties-panel-title {
+  font-size: 1.1em;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color-light);
+}
+
+.property-group {
+  margin-bottom: 20px;
+}
+
+.property-group label {
+  display: block;
+  font-size: 0.9em;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.property-group input[type="text"],
+.property-group input[type="color"],
+.property-group input[type="number"], /* Added number type */
+.property-group select,
+.property-group textarea {
+  width: calc(100% - 16px);
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-input);
+  color: var(--text-primary);
+  border-radius: 4px;
+  font-size: 0.9em;
+  box-sizing: border-box;
+}
+/* Style number inputs specifically if needed */
+.property-group input[type="number"] {
+    width: 60px; /* Example smaller width */
+    margin-right: 5px;
+}
+
+
+.property-group textarea {
+    min-height: 80px;
+    resize: vertical;
+}

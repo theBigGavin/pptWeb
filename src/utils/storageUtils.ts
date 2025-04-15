@@ -1,9 +1,9 @@
-import { Edge } from 'reactflow'; // Removed unused Node import
-import { SlideNode, Layer } from '../types'; // Import Layer type
+import { Edge, Node } from 'reactflow'; // Import Node type
+import { SlideNode, Layer, NodeData } from '../types'; // Import Layer and NodeData types
 
 // --- Constants ---
-const LOCALSTORAGE_KEY_NODES = 'pptWebNodes';
-const LOCALSTORAGE_KEY_EDGES = 'pptWebEdges';
+export const LOCALSTORAGE_KEY_NODES = 'pptWebNodes'; // Export constant
+export const LOCALSTORAGE_KEY_EDGES = 'pptWebEdges'; // Export constant
 
 // Define default layers for the initial node
 const defaultLayers: Layer[] = [
@@ -11,6 +11,7 @@ const defaultLayers: Layer[] = [
   { id: `1-title`, type: 'title', name: '标题', content: `标题 1`, style: { top: '20px', left: '20px', width: 'calc(100% - 40px)', height: 'auto', zIndex: 1, fontSize: '24px', fontWeight: 'bold' }, textFormat: { textAlign: 'center' } },
 ];
 
+// Define default initial nodes specifically as SlideNode[]
 const defaultInitialNodes: SlideNode[] = [
   {
     id: "1",
@@ -21,18 +22,19 @@ const defaultInitialNodes: SlideNode[] = [
     },
     position: { x: 100, y: 100 },
     // Ensure width and height are set if SlideNode component relies on them
-    // These might come from the node type definition or be set dynamically
     width: 320, // Match SlideNode style
     height: 180, // Match SlideNode style
   },
 ];
 
 // --- Initial State Loading ---
-export const loadInitialState = (): { initialNodes: SlideNode[], initialEdges: Edge[] } => {
+// Return type should match the state structure in App.tsx (Node<NodeData>[])
+export const loadInitialState = (): { initialNodes: Node<NodeData>[], initialEdges: Edge[] } => {
   const storedNodes = localStorage.getItem(LOCALSTORAGE_KEY_NODES);
   const storedEdges = localStorage.getItem(LOCALSTORAGE_KEY_EDGES);
 
-  let initialNodes: SlideNode[] = defaultInitialNodes; // Default value
+  // Default value should also match the expected return type
+  let initialNodes: Node<NodeData>[] = defaultInitialNodes as Node<NodeData>[]; // Cast default
   let initialEdges: Edge[] = [];
 
   if (storedNodes) {
@@ -41,7 +43,7 @@ export const loadInitialState = (): { initialNodes: SlideNode[], initialEdges: E
       // Basic validation: check if it's an array
       if (Array.isArray(parsedNodes)) {
         // TODO: Add more robust validation for node structure if needed
-        initialNodes = parsedNodes;
+        initialNodes = parsedNodes as Node<NodeData>[]; // Cast parsed data
       } else {
         console.error("Stored nodes data is not an array, using default.");
       }
@@ -70,7 +72,8 @@ export const loadInitialState = (): { initialNodes: SlideNode[], initialEdges: E
 };
 
 // --- State Saving ---
-export const saveNodesToStorage = (nodes: SlideNode[]) => {
+// Function signature should accept the type used in App.tsx state (Node<NodeData>[])
+export const saveNodesToStorage = (nodes: Node<NodeData>[]) => {
   try {
     localStorage.setItem(LOCALSTORAGE_KEY_NODES, JSON.stringify(nodes));
   } catch (error) {
