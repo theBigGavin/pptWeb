@@ -15,7 +15,7 @@ import EditorArea from "./EditorArea";
 import PropertiesPanel from "./PropertiesPanel";
 
 // Import types and utils
-import { NodeData, SlideNode } from "../types";
+import { NodeData, SlideNode, Theme } from "../types"; // Import Theme type
 import {
   loadInitialState,
   saveNodesToStorage,
@@ -25,8 +25,14 @@ import { getNodesInOrder, applyAutoLayout } from "../utils/nodeUtils";
 import { exportPresentation as exportPresentationUtil } from "../utils/exportUtils";
 import SettingsButton from "./SettingsButton"; // Import SettingsButton
 
+// Define props for FlowCanvas
+interface FlowCanvasProps {
+  currentTheme: Theme;
+  onThemeChange: (theme: Theme) => void;
+}
+
 // --- FlowCanvas Component ---
-function FlowCanvas() {
+function FlowCanvas({ currentTheme, onThemeChange }: FlowCanvasProps) { // Destructure props
   const { initialNodes, initialEdges } = loadInitialState();
   const [nodes, setNodes, onNodesChange] =
     useNodesState<NodeData>(initialNodes);
@@ -191,7 +197,8 @@ function FlowCanvas() {
           viewportSize={viewportSize} // Pass viewport size down
         />
       </div>
-      <SettingsButton /> {/* Render the settings button */}
+      {/* Pass theme props down to SettingsButton */}
+      <SettingsButton currentTheme={currentTheme} onThemeChange={onThemeChange} />
       {/* Properties Panel with conditional visibility */}
       <div
         className={`properties-panel-container ${

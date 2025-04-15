@@ -1,3 +1,76 @@
+/* Theme Variables */
+:root {
+  --bg-primary: #f4f7f6; /* Main background */
+  --bg-secondary: #ffffff; /* Panel, Modal backgrounds */
+  --bg-secondary-translucent: rgba(255, 255, 255, 0.95); /* Toolbar, Controls background */
+  --bg-tertiary: #eee; /* Button backgrounds */
+  --bg-canvas: #e9ecef; /* Editor area background */
+  --bg-node: #ffffff; /* Node background */
+  --bg-input: #ffffff; /* Input/Select background */
+  --bg-hover: #f0f0f0; /* Hover background */
+  --bg-active: #e0e0e0; /* Active background */
+  --bg-button: #f8f8f8; /* Specific button background (controls) */
+
+  --text-primary: #333; /* Primary text */
+  --text-secondary: #555; /* Secondary text, icons */
+  --text-tertiary: #888; /* Tertiary text (e.g., close button, version) */
+  --text-button: #444; /* Toolbar button text */
+  --text-inverted: #ffffff; /* Text on dark backgrounds (if any in light mode) */
+  --text-placeholder: #aaa;
+
+  --border-color: #ccc; /* Input borders */
+  --border-color-light: #eee; /* Separator lines */
+  --border-color-medium: #ddd; /* Node borders */
+
+  --accent-color: #4285F4; /* Highlight color (e.g., selected node, focus) */
+  --accent-focus-shadow: rgba(66, 133, 244, 0.2); /* Focus ring shadow */
+
+  --shadow-color: rgba(0, 0, 0, 0.15); /* Main shadow */
+  --shadow-light: rgba(0, 0, 0, 0.1); /* Lighter shadow */
+  --shadow-node: rgba(0, 0, 0, 0.08); /* Node shadow */
+
+  --overlay-bg: rgba(0, 0, 0, 0.5); /* Modal overlay */
+
+  --scrollbar-thumb: #c1c1c1;
+  --scrollbar-track: var(--bg-primary);
+}
+
+body[data-theme="dark"] {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2a2a2a;
+  --bg-secondary-translucent: rgba(42, 42, 42, 0.95);
+  --bg-tertiary: #3a3a3a;
+  --bg-canvas: #202020;
+  --bg-node: #303030;
+  --bg-input: #3a3a3a;
+  --bg-hover: #4a4a4a;
+  --bg-active: #5a5a5a;
+  --bg-button: #333;
+
+  --text-primary: #e0e0e0;
+  --text-secondary: #b0b0b0;
+  --text-tertiary: #888;
+  --text-button: #c0c0c0;
+  --text-inverted: #1a1a1a;
+  --text-placeholder: #666;
+
+  --border-color: #555;
+  --border-color-light: #444;
+  --border-color-medium: #666;
+
+  --accent-color: #5c9dff;
+  --accent-focus-shadow: rgba(92, 157, 255, 0.3);
+
+  --shadow-color: rgba(0, 0, 0, 0.5);
+  --shadow-light: rgba(0, 0, 0, 0.4);
+  --shadow-node: rgba(0, 0, 0, 0.3);
+
+  --overlay-bg: rgba(0, 0, 0, 0.7);
+
+  --scrollbar-thumb: #555;
+  --scrollbar-track: var(--bg-primary);
+}
+
 /* Global Resets and Base Styles */
 body {
   margin: 0;
@@ -5,7 +78,9 @@ body {
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f4f7f6;
+  background-color: var(--bg-primary);
+  color: var(--text-primary); /* Set base text color */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth theme transition */
   height: 100vh;
   width: 100vw;
   overflow: hidden; /* Prevent body scrolling */
@@ -30,11 +105,11 @@ body {
   position: absolute;
   top: 20px; /* Position from top */
   left: 20px; /* Position from left */
-  background-color: rgba(255, 255, 255, 0.95); /* Slightly transparent background */
+  background-color: var(--bg-secondary-translucent);
   border-radius: 8px;
   padding: 8px; /* Reduced padding */
   box-sizing: border-box;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Stronger shadow for floating */
+  box-shadow: 0 4px 12px var(--shadow-color);
   z-index: 20; /* Ensure it's above properties panel */
   display: flex;
   flex-direction: column;
@@ -77,7 +152,7 @@ body {
 
 /* Toggle Button Styles */
 .toolbar-toggle-button {
-  background: #eee;
+  background: var(--bg-tertiary);
   border: none;
   border-radius: 4px;
   padding: 5px 8px;
@@ -86,12 +161,12 @@ body {
   align-self: center; /* Center the toggle button */
   font-size: 1.2em; /* Make icon larger */
   line-height: 1;
-  color: #555;
+  color: var(--text-secondary);
   transition: background-color 0.2s ease;
 }
 
 .toolbar-toggle-button:hover {
-  background: #ddd;
+  background: var(--bg-hover); /* Use hover background */
 }
 
 .toolbar-container.collapsed .toolbar-toggle-button {
@@ -102,7 +177,7 @@ body {
   width: 100%; /* Take full width */
   height: 100%; /* Take full height */
   /* flex-grow: 1; */ /* Removed flex property */
-  background-color: #e9ecef;
+  background-color: var(--bg-canvas);
   position: relative;
   overflow: hidden;
 }
@@ -113,12 +188,12 @@ body {
   bottom: 0;
   width: 280px; /* Fixed width for the panel */
   right: -280px; /* Start off-screen */
-  background-color: #ffffff;
-  /* border-left: 1px solid #e0e0e0; */ /* Optional: keep border? */
+  background-color: var(--bg-secondary);
+  /* border-left: 1px solid var(--border-color-light); */ /* Optional: keep border? */
   padding: 20px;
   box-sizing: border-box;
   overflow-y: auto;
-  box-shadow: -3px 0 8px rgba(0,0,0,0.1); /* Adjusted shadow */
+  box-shadow: -3px 0 8px var(--shadow-light);
   transition: right 0.3s ease-in-out; /* Sliding transition */
   z-index: 10; /* Ensure it's above the editor */
 }
@@ -131,10 +206,10 @@ body {
 .toolbar-title {
   font-size: 1.1em; /* Slightly smaller */
   font-weight: 600;
-  color: #333;
+  color: var(--text-primary);
   margin-bottom: 15px; /* Reduced margin */
   padding-bottom: 8px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border-color-light);
   width: 100%; /* Ensure border spans width */
   text-align: center; /* Center title */
 }
@@ -147,7 +222,7 @@ body {
 
 .toolbar-menu li {
   /* margin-bottom: 10px; */ /* Remove bottom margin from li */
-  border-bottom: 1px solid #f0f0f0; /* Add separator line */
+  border-bottom: 1px solid var(--border-color-light); /* Use light border */
   padding-bottom: 8px; /* Add padding below button before line */
   margin-bottom: 8px; /* Add margin below line */
 }
@@ -169,17 +244,17 @@ body {
   cursor: pointer;
   text-align: left;
   font-size: 0.95em;
-  color: #444;
+  color: var(--text-button);
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .toolbar-button:hover {
-  background-color: #f0f0f0;
-  color: #000;
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
 }
 
 .toolbar-button:active {
-  background-color: #e0e0e0; /* Darker background on click */
+  background-color: var(--bg-active);
   transform: scale(0.98); /* Slight shrink effect */
   transition: background-color 0.05s ease, transform 0.05s ease; /* Faster transition for active state */
 }
@@ -206,10 +281,10 @@ body {
 .properties-panel-title {
   font-size: 1.1em;
   font-weight: 600;
-  color: #333;
+  color: var(--text-primary);
   margin-bottom: 20px;
   padding-bottom: 10px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border-color-light);
 }
 
 .property-group {
@@ -219,7 +294,7 @@ body {
 .property-group label {
   display: block;
   font-size: 0.9em;
-  color: #555;
+  color: var(--text-secondary);
   margin-bottom: 6px;
 }
 
@@ -229,7 +304,9 @@ body {
 .property-group textarea {
   width: calc(100% - 16px); /* Account for padding/border */
   padding: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-input); /* Add background for inputs */
+  color: var(--text-primary); /* Add text color for inputs */
   border-radius: 4px;
   font-size: 0.9em;
   box-sizing: border-box;
@@ -244,19 +321,20 @@ body {
 /* You'll typically import reactflow/dist/style.css */
 /* Add custom node styles here if needed */
 .react-flow__node-default { /* Example custom node style */
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color-medium);
   padding: 15px;
   border-radius: 5px;
-  background: white;
+  background: var(--bg-node);
+  color: var(--text-primary); /* Add text color for nodes */
   width: 180px; /* Example width */
   min-height: 100px; /* Example height */
   font-size: 12px;
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 4px var(--shadow-node);
 }
 
 .react-flow__node-default.selected {
-    box-shadow: 0 0 0 2px #4285F4; /* Highlight selected node */
+    box-shadow: 0 0 0 2px var(--accent-color);
 }
 
 .react-flow__handle {
@@ -279,8 +357,8 @@ body {
 .react-flow__controls {
   padding: 6px !important; /* Reduced padding to decrease height */
   border-radius: 16px !important; /* More rounded corners */
-  background-color: rgba(255, 255, 255, 0.95) !important; /* White background */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important; /* Softer shadow */
+  background-color: var(--bg-secondary-translucent) !important;
+  box-shadow: 0 4px 12px var(--shadow-color) !important;
   bottom: 25px !important; /* Position slightly higher from bottom */
   display: flex !important; /* Ensure horizontal layout */
   align-items: center !important;
@@ -295,20 +373,20 @@ body {
   margin: 0 6px !important; /* Increased spacing */
   border-radius: 12px !important; /* More rounded buttons */
   border: none !important; /* Remove default border */
-  background-color: #f8f8f8 !important; /* Light background */
-  color: #555 !important;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+  background-color: var(--bg-button) !important;
+  color: var(--text-secondary) !important;
+  box-shadow: 0 1px 3px var(--shadow-light) !important;
   transition: background-color 0.2s ease, transform 0.1s ease !important;
 }
 
 .react-flow__controls button:hover,
 .react-flow__controls .react-flow__controls-button:hover {
-  background-color: #eee !important;
+  background-color: var(--bg-hover) !important;
 }
 
 .react-flow__controls button:active,
 .react-flow__controls .react-flow__controls-button:active {
-  background-color: #e0e0e0 !important;
+  background-color: var(--bg-active) !important;
   transform: scale(0.95) !important;
 }
 
@@ -316,7 +394,7 @@ body {
 .react-flow__controls .react-flow__controls-button:disabled {
   opacity: 0.5 !important;
   cursor: not-allowed !important;
-  background-color: #f8f8f8 !important;
+  background-color: var(--bg-button) !important;
   box-shadow: none !important;
   transform: none !important;
 }
@@ -336,25 +414,25 @@ body {
   width: 40px; /* Match controls button size */
   height: 40px; /* Match controls button size */
   border-radius: 50%; /* Make it round */
-  background-color: rgba(248, 248, 248, 0.95); /* Match controls button background */
+  background-color: var(--bg-button); /* Use button background */
   border: none;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important; /* Match controls button shadow */
+  box-shadow: 0 1px 3px var(--shadow-light) !important;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   z-index: 20; /* Above editor, same level as controls */
   transition: transform 0.2s ease, background-color 0.2s ease;
-  color: #555; /* Match controls button color */
+  color: var(--text-secondary);
 }
 
 .settings-button:hover {
-  background-color: #eee !important; /* Match controls hover */
+  background-color: var(--bg-hover) !important;
 }
 
 .settings-button:active {
    transform: scale(0.9); /* Slightly stronger active effect */
-   background-color: #e0e0e0 !important; /* Match controls active */
+   background-color: var(--bg-active) !important;
 }
 
 .settings-button svg { /* Style the icon inside */
@@ -380,7 +458,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  background-color: var(--overlay-bg);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -398,10 +476,10 @@ body {
 
 
 .settings-modal-content {
-  background-color: white;
+  background-color: var(--bg-secondary); /* Use secondary background for panels/modals */
   padding: 25px 30px;
   border-radius: 12px; /* Rounded corners */
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 15px var(--shadow-color); /* Use main shadow */
   min-width: 400px; /* Minimum width */
   max-width: 600px; /* Maximum width */
   z-index: 1001;
@@ -420,7 +498,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border-color-light);
   padding-bottom: 15px;
   margin-bottom: 20px;
 }
@@ -428,7 +506,7 @@ body {
 .settings-modal-header h3 {
   margin: 0;
   font-size: 1.4em;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .settings-modal-close-btn {
@@ -436,15 +514,80 @@ body {
   border: none;
   font-size: 1.5em;
   cursor: pointer;
-  color: #888;
+  color: var(--text-tertiary);
   padding: 0;
   line-height: 1;
 }
 .settings-modal-close-btn:hover {
-    color: #333;
+    color: var(--text-primary);
 }
 
 .settings-modal-body {
   /* Add styles for modal content area */
   min-height: 150px; /* Example min height */
+}
+
+/* Styles for Settings Modal Content */
+.setting-group {
+  margin-bottom: 25px; /* Space between setting groups */
+}
+
+.setting-group:last-child {
+  margin-bottom: 0; /* No margin for the last group */
+}
+
+.setting-group h4 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.1em;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.setting-options-radio label {
+  display: inline-block; /* Align radio buttons horizontally */
+  margin-right: 20px;
+  cursor: pointer;
+  font-size: 0.95em;
+  color: var(--text-primary);
+}
+
+.setting-options-radio label:last-child {
+  margin-right: 0;
+}
+
+.setting-options-radio input[type="radio"] {
+  margin-right: 6px;
+  vertical-align: middle; /* Align radio button with text */
+}
+
+.setting-select {
+  width: 100%; /* Make select boxes take full width */
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 0.95em;
+  background-color: var(--bg-input);
+  color: var(--text-primary); /* Add text color */
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.setting-select:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px var(--accent-focus-shadow);
+}
+
+.version-info {
+  margin-top: 30px; /* Add space above version info */
+  padding-top: 15px;
+  border-top: 1px solid var(--border-color-light);
+  text-align: right; /* Align version to the right */
+  font-size: 0.85em;
+  color: var(--text-tertiary);
+}
+
+.version-info p {
+    margin: 0;
 }

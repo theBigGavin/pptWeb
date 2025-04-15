@@ -24,3 +24,6 @@ export interface NodeData {
 
 // Define Node type with specific data structure
 export type SlideNode = Node<NodeData>;
+
+// Define Theme type for application-wide theme switching
+export type Theme = 'light' | 'dark' | 'system';
