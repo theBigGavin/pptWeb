@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState, useMemo } from "react"; // Import u
 import {
   Node,
   Edge,
-  Connection,
+  // Connection, // Removed unused
   OnNodesChange,
   OnEdgesChange,
   OnConnect,

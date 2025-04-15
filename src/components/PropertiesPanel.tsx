@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useCallback } from "react";
-import { SlideNode, NodeData, Layer, LayerType, TextFormat, MediaLayer, TableLayer, ChartLayer, TextLayer, TitleLayer, FooterLayer } from "../types"; // Import necessary types
+import React, { /*useEffect,*/ useMemo, useCallback } from "react"; // Removed unused useEffect
+import { SlideNode, /*NodeData,*/ Layer, /*LayerType,*/ TextFormat, MediaLayer, /*TableLayer,*/ /*ChartLayer,*/ TextLayer, TitleLayer, FooterLayer } from "../types"; // Import necessary types, removed unused NodeData, LayerType, TableLayer, ChartLayer
 
 // Define the props type
 interface PropertiesPanelProps {

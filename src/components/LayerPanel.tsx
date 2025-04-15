@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Tree, NodeRendererProps, NodeApi } from 'react-arborist';
-import { SlideNode, NodeData, Layer, LayerType } from '../types';
+import { SlideNode, Layer, LayerType } from '../types'; // Removed unused NodeData
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faImage, faFont, faTable, faChartBar, faSquare, faHeading, faAlignLeft, faQuestionCircle, faFilm, faPalette, faFile // Added faFile as a generic page icon
+  faImage, faFont, faTable, faChartBar, faSquare, faHeading, faAlignLeft, faQuestionCircle, /*faFilm,*/ faPalette, faFile // Added faFile as a generic page icon, removed unused faFilm
 } from '@fortawesome/free-solid-svg-icons';
 
 // Define the tree node structure used by react-arborist

@@ -1,8 +1,8 @@
-import React, { memo, useCallback, useRef, useState } from "react";
+import React, { memo, /*useCallback,*/ useRef, useState } from "react"; // Removed unused useCallback
 import { Handle, Position, NodeProps } from "reactflow";
 import Draggable, { DraggableData, DraggableEvent } from 'react-draggable';
 import { ResizableBox, ResizeCallbackData } from 'react-resizable';
-import { Layer, LayerType, NodeData, TextLayer, TitleLayer, FooterLayer, MediaLayer, TableLayer, ChartLayer } from "../../types";
+import { Layer, /*LayerType,*/ NodeData, TextLayer, TitleLayer, FooterLayer, MediaLayer, TableLayer, ChartLayer } from "../../types"; // Removed unused LayerType
 
 // Basic styling for the custom node
 const nodeStyle: React.CSSProperties = {
@@ -32,7 +32,7 @@ interface SlideNodeDataWithUpdate extends NodeData {
 
 const SlideNode: React.FC<NodeProps<SlideNodeDataWithUpdate>> = memo(({ data, isConnectable, selected, id: nodeIdProp }) => {
 
-  const { label = "未命名页面", layers = [], updateLayerData, setSelectedLayerId, nodeId = nodeIdProp, selectedLayerId } = data;
+  const { /*label = "未命名页面",*/ layers = [], updateLayerData, setSelectedLayerId, nodeId = nodeIdProp, selectedLayerId } = data; // Removed unused label
 
   // State to track if resizing is in progress
   const [isResizing, setIsResizing] = useState(false);

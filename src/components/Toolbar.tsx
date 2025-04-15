@@ -8,8 +8,8 @@ import {
   faImage,
   faDesktop,
   faSave,
-  faChevronLeft,
-  faChevronRight,
+  // faChevronLeft, // Removed unused
+  // faChevronRight, // Removed unused
   faBars, // Import faBars icon
 } from "@fortawesome/free-solid-svg-icons";
 

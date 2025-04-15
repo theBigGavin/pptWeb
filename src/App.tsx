@@ -7,12 +7,12 @@ import {
   addEdge,
   Connection,
   Edge,
-  Node, // Keep Node type
+  // Node, // Keep Node type - Removed unused
   useReactFlow, // Keep for fitView etc.
-  NodeChange, // Import NodeChange type
-  EdgeChange, // Import EdgeChange type
-  OnNodesChange, // Import OnNodesChange type
-  OnEdgesChange, // Import OnEdgesChange type
+  // NodeChange, // Import NodeChange type - Removed unused
+  // EdgeChange, // Import EdgeChange type - Removed unused
+  // OnNodesChange, // Import OnNodesChange type - Removed unused
+  // OnEdgesChange, // Import OnEdgesChange type - Removed unused
   NodeMouseHandler, // Import NodeMouseHandler type
 } from "reactflow";
 

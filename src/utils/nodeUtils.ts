@@ -51,7 +51,7 @@ export const getNodesInOrder = (nodesToSort: SlideNode[], edgesToSort: Edge[]): 
 
 // Define fixed node height used in SlideNode.tsx for layout calculation
 const nodeWidth = 320; // Estimated width of a SlideNode
-const nodeHeight = 180; // Keep height for reference if needed later
+// const nodeHeight = 180; // Keep height for reference if needed later - Removed unused
 
 // Function to apply automatic horizontal layout based on node order
 export const applyAutoLayout = (orderedNodes: SlideNode[]): SlideNode[] => {
