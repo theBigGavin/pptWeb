@@ -1,0 +1,150 @@
+/* src/styles/FullscreenPresenter.css */
+
+.fullscreen-presenter-overlay {
+  position: fixed; /* Changed from absolute to fixed to ensure it covers viewport */
+  top: 0;
+  left: 0;
+  padding: 10px;
+  width: 100vw; /* Use viewport width unit */
+  height: 100vh; /* Use viewport height unit */
+  background-color: rgba(0, 0, 0, 0.9); /* Darker overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000; /* Ensure it's above everything else */
+  color: #fff;
+  box-sizing: border-box;
+  overflow-x: hidden; /* Prevent horizontal scrollbar */
+  overflow-y: auto; /* Allow vertical scroll if content is too tall */
+}
+
+.presenter-content {
+  background-color: rgba(
+    34,
+    34,
+    34,
+    0.8
+  ); /* Slightly transparent dark background for content area */
+  padding: 90px;
+  border-radius: 8px;
+  text-align: center;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden; /* Prevent horizontal scroll on content area */
+  /* display: flex; */
+  flex-direction: column;
+  /* align-items: center; */
+  height: 100%;
+  width: 100%;
+}
+
+.presenter-content h1 {
+  margin-top: 0;
+  color: #000000;
+}
+
+.presenter-content p {
+  color: #000000;
+}
+
+.presenter-controls {
+  position: fixed; /* Fixed position at the bottom */
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(50, 50, 50, 0.8);
+  padding: 10px 20px;
+  border-radius: 25px;
+  display: flex;
+  gap: 15px;
+  z-index: 2001; /* Above the overlay content */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  align-items: center; /* Vertically align items in the control bar */
+}
+
+.presenter-controls button {
+  background-color: #444;
+  color: #eee;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 14px;
+}
+
+.presenter-controls button:hover {
+  background-color: #555;
+}
+
+.presenter-controls button:active {
+  background-color: #666;
+}
+
+/* Styles for new controls */
+.autoplay-interval-input {
+  width: 50px; /* Adjust width as needed */
+  padding: 5px 8px;
+  border-radius: 10px;
+  border: 1px solid #666;
+  background-color: #333;
+  color: #eee;
+  text-align: center;
+  font-size: 14px;
+  margin: 0 5px 0 10px; /* Spacing around input */
+  -moz-appearance: textfield; /* Firefox */
+}
+.autoplay-interval-input::-webkit-outer-spin-button,
+.autoplay-interval-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.interval-unit {
+  color: #ccc;
+  font-size: 14px;
+  margin-right: 10px; /* Spacing after unit */
+}
+
+/* Style for the slide container to enable scaling */
+.presenter-slide-container {
+  width: 100%; /* Max width relative to viewport */
+  height: 100%; /* Max height relative to viewport */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden !important; /* Force hide overflow on the direct container */
+  margin-bottom: 70px; /* Space above the controls */
+}
+
+/* Target the SlideNodeComponent rendered inside */
+.presenter-slide-container > .react-flow__node {
+  position: relative !important; /* Override absolute positioning from React Flow if needed */
+  transform-origin: center center !important; /* Scale from the center */
+  color: var(--text-primary); /* Ensure text color matches the theme */
+  /* Calculate scale dynamically based on container and node dimensions */
+  /* This requires JS or more complex CSS, let's start with a fixed scale or max-width/height */
+  /* For simplicity, let's ensure it fits without scaling first */
+  max-width: 100%;
+  max-height: 100%;
+  /* We might need JS to calculate the optimal scale factor later */
+  /* Example fixed scale (adjust as needed): */
+  /* transform: scale(0.8); */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4); /* Add shadow for better visibility */
+  background: var(--bg-node); /* Ensure background is visible */
+}
+
+/* Standalone exit button style (when no nodes) */
+.presenter-exit-button-standalone {
+  background-color: #555;
+  color: #eee;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
+}
+.presenter-exit-button-standalone:hover {
+  background-color: #666;
+}

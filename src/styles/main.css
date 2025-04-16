@@ -101,8 +101,14 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
   height: 100vh;
   width: 100vw;
-  overflow: hidden;
+  overflow: hidden; /* Default overflow hidden */
 }
+
+/* Force hide body overflow when fullscreen is active */
+body:has(.app-container.fullscreen-active) {
+  overflow: hidden !important;
+}
+
 
 #root {
   height: 100%;
@@ -123,5 +129,22 @@ body {
   background-color: var(--bg-canvas);
   position: relative;
   overflow: hidden;
+}
+
+/* Ensure app-container fills space when fullscreen */
+.app-container:fullscreen {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important; /* Just in case */
+  box-sizing: border-box !important; /* Ensure padding/border are included */
+  width: 100% !important; /* Use 100% relative to the fullscreen viewport */
+  height: 100% !important;
+  overflow: hidden !important; /* Prevent scrollbars within the fullscreen element */
+}
+
+/* Ensure html/body don't interfere when something is fullscreen */
+html:has(:fullscreen),
+body:has(:fullscreen) {
+    overflow: hidden !important; /* Prevent scrollbars on body */
 }
 

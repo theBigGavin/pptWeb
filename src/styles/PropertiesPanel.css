@@ -28,7 +28,6 @@
   overflow-x: hidden;
 }
 
-
 /* Properties Panel Styles */
 .properties-panel-title {
   font-size: 0.8rem; /* Smaller font size */
@@ -46,7 +45,8 @@
   margin-bottom: 16px; /* Slightly reduced margin */
 }
 
-.property-group h4 { /* Style group titles */
+.property-group h4 {
+  /* Style group titles */
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--figma-text-primary);
@@ -54,7 +54,6 @@
   text-transform: uppercase;
   letter-spacing: 0.3px;
 }
-
 
 .property-group label {
   display: block;
@@ -90,19 +89,17 @@
   box-shadow: 0 0 0 1px var(--figma-accent); /* Focus ring */
 }
 
-
 /* Specific adjustments */
 /* Remove general color input height/padding override if handled by group */
 /* .property-group input[type="color"] { ... } */
 
 .property-group input[type="number"] {
-    /* Keep full width for consistency, or use flex layout for label+input */
+  /* Keep full width for consistency, or use flex layout for label+input */
 }
 
-
 .property-group textarea {
-    min-height: 60px; /* Reduced min-height */
-    resize: vertical;
+  min-height: 60px; /* Reduced min-height */
+  resize: vertical;
 }
 
 /* Style for horizontal rules */
@@ -149,41 +146,42 @@
 
 /* Button Group for icons like alignment */
 .button-group {
-display: flex;
-gap: 4px; /* Small gap between buttons */
+  display: flex;
+  gap: 4px; /* Small gap between buttons */
 }
 
 .icon-button {
-background-color: var(--figma-button-bg);
-border: 1px solid var(--figma-panel-border);
-color: var(--figma-button-text);
-padding: 5px 8px; /* Adjust padding for icon size */
-border-radius: 3px;
-cursor: pointer;
-font-size: 0.9em; /* Adjust if needed for icon size */
-line-height: 1; /* Ensure icon is centered vertically */
-transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-display: flex;
-align-items: center;
-justify-content: center;
+  background-color: var(--figma-button-bg);
+  border: 1px solid var(--figma-panel-border);
+  color: var(--figma-button-text);
+  padding: 5px 8px; /* Adjust padding for icon size */
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.9em; /* Adjust if needed for icon size */
+  line-height: 1; /* Ensure icon is centered vertically */
+  transition: background-color 0.15s ease, border-color 0.15s ease,
+    color 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .icon-button:hover {
-background-color: var(--figma-button-hover-bg);
-border-color: var(--figma-panel-border); /* Keep border consistent on hover */
-color: var(--figma-text-primary);
+  background-color: var(--figma-button-hover-bg);
+  border-color: var(--figma-panel-border); /* Keep border consistent on hover */
+  color: var(--figma-text-primary);
 }
 
 .icon-button.active {
-background-color: var(--figma-bg-selected); /* Use accent color for active */
-border-color: var(--figma-bg-selected);
-color: var(--figma-text-selected); /* White text on active */
+  background-color: var(--figma-bg-selected); /* Use accent color for active */
+  border-color: var(--figma-bg-selected);
+  color: var(--figma-text-selected); /* White text on active */
 }
 
 .icon-button.active:hover {
-background-color: var(--figma-bg-selected); /* Keep active style on hover */
-border-color: var(--figma-bg-selected);
-color: var(--figma-text-selected);
+  background-color: var(--figma-bg-selected); /* Keep active style on hover */
+  border-color: var(--figma-bg-selected);
+  color: var(--figma-text-selected);
 }
 
 /* Rotate icons for vertical alignment */
@@ -192,7 +190,6 @@ color: var(--figma-text-selected);
 .icon-button.vertical-align-bottom svg {
   transform: rotate(90deg);
 }
-
 
 /* Accordion Styles */
 .accordion-section {
@@ -242,7 +239,6 @@ color: var(--figma-text-selected);
   margin-bottom: 0; /* No margin for the last group in a section */
 }
 
-
 /* --- Removed Fill List Styles --- */
 /* .fill-list { ... } */
 /* .fill-item { ... } */
@@ -255,7 +251,6 @@ color: var(--figma-text-selected);
 /* .fill-color-text-input { ... } */ /* Reused below */
 /* .fill-blend-mode-select { ... } */ /* Reused below */
 
-
 /* Style for grouping background color picker and text input */
 .color-input-group {
   display: flex;
@@ -264,7 +259,8 @@ color: var(--figma-text-selected);
 }
 
 /* Style for the background color picker */
-.color-input-group .fill-color-input { /* Reusing class name for consistency */
+.color-input-group .fill-color-input {
+  /* Reusing class name for consistency */
   width: 24px;
   height: 24px;
   padding: 0;
@@ -277,54 +273,54 @@ color: var(--figma-text-selected);
   vertical-align: middle;
 }
 .color-input-group .fill-color-input::-webkit-color-swatch-wrapper {
-	padding: 0;
+  padding: 0;
 }
 .color-input-group .fill-color-input::-webkit-color-swatch {
-	border: none;
-    border-radius: 2px;
+  border: none;
+  border-radius: 2px;
 }
 .color-input-group .fill-color-input::-moz-color-swatch {
-    border: none;
-    border-radius: 2px;
+  border: none;
+  border-radius: 2px;
 }
 
 /* Style for the background color text input */
-.color-input-group .fill-color-text-input { /* Reusing class name */
-   flex-grow: 1; /* Allow text input to take remaining space */
-   width: auto; /* Override fixed width if previously set */
-   margin-left: 0; /* Remove margin if previously set */
-   /* Inherits base input styles */
-   padding: 3px 5px;
-   font-size: 0.8em;
-   vertical-align: middle;
+.color-input-group .fill-color-text-input {
+  /* Reusing class name */
+  flex-grow: 1; /* Allow text input to take remaining space */
+  width: auto; /* Override fixed width if previously set */
+  margin-left: 0; /* Remove margin if previously set */
+  /* Inherits base input styles */
+  padding: 3px 5px;
+  font-size: 0.8em;
+  vertical-align: middle;
 }
 .color-input-group .fill-color-text-input:focus {
-   /* Inherits base input focus styles */
-   outline: none;
-   border-color: var(--figma-accent);
-   box-shadow: 0 0 0 1px var(--figma-accent);
+  /* Inherits base input focus styles */
+  outline: none;
+  border-color: var(--figma-accent);
+  box-shadow: 0 0 0 1px var(--figma-accent);
 }
-
 
 /* Style for background control dropdowns (Size, Repeat, Blend Mode) */
-.accordion-content select { /* More specific selector */
-    width: 100%;
-    padding: 6px 8px;
-    border: 1px solid var(--figma-panel-border);
-    background-color: var(--figma-panel-bg);
-    color: var(--figma-text-primary);
-    border-radius: 3px;
-    font-size: 0.85em;
-    box-sizing: border-box;
-    cursor: pointer;
-    margin-top: 2px; /* Add slight top margin */
+.accordion-content select {
+  /* More specific selector */
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--figma-panel-border);
+  background-color: var(--figma-panel-bg);
+  color: var(--figma-text-primary);
+  border-radius: 3px;
+  font-size: 0.85em;
+  box-sizing: border-box;
+  cursor: pointer;
+  margin-top: 2px; /* Add slight top margin */
 }
 .accordion-content select:focus {
-    outline: none;
-    border-color: var(--figma-accent);
-    box-shadow: 0 0 0 1px var(--figma-accent);
+  outline: none;
+  border-color: var(--figma-accent);
+  box-shadow: 0 0 0 1px var(--figma-accent);
 }
-
 
 /* Alignment Button Group & Buttons */
 .button-group-align {
@@ -351,7 +347,6 @@ color: var(--figma-text-selected);
   color: var(--figma-text-primary);
 }
 
-
 /* Helper text styles */
 .properties-panel-info {
   font-size: 0.8em;
@@ -361,9 +356,96 @@ color: var(--figma-text-selected);
 }
 
 .properties-panel-placeholder {
-    color: var(--figma-text-secondary);
-    text-align: center;
-    margin-top: 20px;
-    font-size: 0.9em;
-    padding: 0 10px; /* Add some padding */
+  color: var(--figma-text-secondary);
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.9em;
+  padding: 0 10px; /* Add some padding */
+}
+
+/* Styles for inline controls (e.g., font size, color, weight) */
+.property-subgroup.inline-controls {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: nowrap;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+/* Style for each label-control pair within the inline group */
+.inline-control-item {
+  display: flex;
+  align-items: center; /* Align label and control vertically */
+  gap: 4px; /* Space between label and control */
+  justify-content: space-around;
+}
+
+/* Adjust label style within inline items */
+.inline-control-item > label {
+  display: inline-block; /* Override block display */
+  margin-bottom: 0; /* Remove bottom margin */
+  white-space: nowrap; /* Prevent label wrapping */
+  color: var(--figma-text-secondary); /* Consistent label color */
+  font-size: 0.75em; /* Slightly smaller label */
+}
+
+/* Adjust control styles within inline items */
+.inline-control-item > select,
+.inline-control-item > input {
+  width: auto; /* Allow natural width or set specific widths */
+  margin-bottom: 0; /* Remove default bottom margin */
+  flex-shrink: 0; /* Prevent controls from shrinking too much */
+}
+
+/* Remove default margin/width for direct inputs/selects if any remain */
+/* .property-subgroup.inline-controls > input,
+.property-subgroup.inline-controls > select {
+  width: auto;
+  margin-bottom: 0;
+} */
+
+/* Specific widths/styles for inline font controls - Remove fixed widths to allow flex distribution */
+/* .inline-control-item .font-size-select {
+  width: 55px;
+} */
+
+.inline-control-item .font-color-input {
+  width: 24px; /* Keep small color swatch */
+  height: 24px; /* Match height */
+  padding: 1px; /* Minimal padding */
+  border: 1px solid var(--figma-panel-border);
+  border-radius: 3px;
+  cursor: pointer;
+  background-color: transparent;
+  flex-shrink: 0;
+  /* Resetting potential inherited styles */
+  box-sizing: border-box;
+}
+.property-subgroup.inline-controls
+  .font-color-input::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+.property-subgroup.inline-controls .font-color-input::-webkit-color-swatch {
+  border: none;
+  border-radius: 2px; /* Slightly rounded swatch */
+}
+.property-subgroup.inline-controls .font-color-input::-moz-color-swatch {
+  border: none;
+  border-radius: 2px;
+}
+
+/* .inline-control-item .font-weight-select {
+  width: 85px;
+} */
+
+/* Remove the old specific width rules if they target classes directly under inline-controls */
+/* .property-subgroup.inline-controls .font-size-select { ... } */ /* Changed from input */
+/* .property-subgroup.inline-controls .font-color-input { ... } */
+/* .property-subgroup.inline-controls .font-weight-input { ... } */
+
+/* Ensure labels above inline controls are styled correctly if needed */
+.property-group > .inline-controls {
+  margin-top: 4px; /* Add some space below the main group label if any */
 }

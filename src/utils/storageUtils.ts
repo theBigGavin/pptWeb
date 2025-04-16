@@ -8,24 +8,12 @@ export const LOCALSTORAGE_KEY_EDGES = 'pptWebEdges'; // Export constant
 // Define default layers for the initial node
 const defaultLayers: Layer[] = [
   { id: `1-bg`, type: 'background', name: '背景', style: { backgroundColor: '#ffffff', width: '100%', height: '100%', zIndex: 0 } },
-  { id: `1-title`, type: 'title', name: '标题', content: `标题 1`, style: { top: '20px', left: '20px', width: 'calc(100% - 40px)', height: 'auto', zIndex: 1, fontSize: '24px', fontWeight: 'bold' }, textFormat: { textAlign: 'center' } },
+  { id: `1-title`, type: 'title', name: '标题', content: `标题 1`, style: { top: '20px', left: '20px', width: '300px', height: 'auto', zIndex: 1, fontSize: '24px', fontWeight: 'bold' }, textFormat: { textAlign: 'center' } },
 ];
 
 // Define default initial nodes specifically as SlideNode[]
-const defaultInitialNodes: SlideNode[] = [
-  {
-    id: "1",
-    type: "slideNode",
-    data: {
-      label: "PPT 页面 1",
-      layers: defaultLayers, // Use the new layers structure
-    },
-    position: { x: 100, y: 100 },
-    // Ensure width and height are set if SlideNode component relies on them
-    width: 320, // Match SlideNode style
-    height: 180, // Match SlideNode style
-  },
-];
+// Changed to an empty array to start with a blank canvas by default
+const defaultInitialNodes: SlideNode[] = [];
 
 // --- Initial State Loading ---
 // Return type should match the state structure in App.tsx (Node<NodeData>[])

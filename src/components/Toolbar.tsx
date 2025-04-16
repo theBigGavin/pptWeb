@@ -20,6 +20,7 @@ interface ToolbarProps {
   exportToPptx: () => void;
   onAutoLayout: () => void; // Add the auto layout function prop
   onClearStorage: () => void; // Add the clear storage function prop
+  onToggleFullscreen: () => void; // Add the fullscreen toggle function prop
 }
 
 const Toolbar: React.FC<ToolbarProps> = ({
@@ -27,6 +28,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
   exportToPptx,
   onAutoLayout,
   onClearStorage, // Destructure the clear storage handler
+  onToggleFullscreen, // Destructure the fullscreen handler
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(true); // Start collapsed
 
@@ -101,9 +103,10 @@ const Toolbar: React.FC<ToolbarProps> = ({
           </button>
         </li>
         <li>
+          {/* Update this button to use the passed handler */}
           <button
             className="toolbar-button"
-            onClick={() => alert("功能待实现: 全屏预览")}
+            onClick={onToggleFullscreen} // Use the passed handler
           >
             <FontAwesomeIcon
               icon={faDesktop}

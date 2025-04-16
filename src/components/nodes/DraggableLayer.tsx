@@ -47,13 +47,21 @@ const DraggableLayer: React.FC<DraggableLayerProps> = ({
   ): number => {
     if (typeof value === "number") return value;
     if (typeof value === "string") {
-      // Only parse if it explicitly ends with 'px'
+      // Parse if it explicitly ends with 'px'
       if (value.endsWith("px")) {
-        // Use parseFloat and handle potential NaN
-        return parseFloat(value) || defaultValue;
+        const parsed = parseFloat(value);
+        // Return parsed value if valid, otherwise the default
+        return isNaN(parsed) ? defaultValue : parsed;
       }
-      // For percentages or other values, return the default for ResizableBox init
-      return defaultValue;
+      // If the value is '100%', return a minimal default (e.g., 1) for ResizableBox's numeric width prop.
+      // The actual visual width is handled by the outer container's style ('100%')
+      // and the ResizableBox's own style ('100%').
+      // Providing a large numeric prop might interfere with the percentage-based layout.
+      if (value === '100%') {
+        return 1; // Use a minimal pixel value for the prop
+      }
+      // For other non-pixel string values (e.g., 'auto', other percentages), return the standard default.
+      return defaultValue; // Keep the original default (100) for other cases like 'auto' or undefined
     }
     // For undefined or other types, return the default
     return defaultValue;

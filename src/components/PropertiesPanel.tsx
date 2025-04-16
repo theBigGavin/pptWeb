@@ -55,140 +55,262 @@ const renderTextFormatEditors = (
   const textFormat = layer.textFormat || {};
 
   return (
-    <div className="property-group">
-      <h4>文本格式</h4>
-      <label>字体大小:</label>
-      <input
-        type="text"
-        value={textFormat.fontSize ?? ""}
-        onChange={(e) => handleTextFormatChange("fontSize", e.target.value)}
-        placeholder="e.g., 16px or 1.2em"
-      />
-      <label>颜色:</label>
-      <input
-        type="color"
-        value={textFormat.color ?? "#000000"}
-        onChange={(e) => handleTextFormatChange("color", e.target.value)}
-      />
-      <label>粗细:</label>
-      <input
-        type="text"
-        value={textFormat.fontWeight ?? ""}
-        onChange={(e) => handleTextFormatChange("fontWeight", e.target.value)}
-        placeholder="e.g., bold or 600"
-      />
-      <label>对齐:</label>
-      <div className="button-group">
-        <button
-          className={`icon-button ${
-            (textFormat.textAlign ?? "left") === "left" ? "active" : ""
-          }`}
-          onClick={() => handleTextFormatChange("textAlign", "left")}
-          title="左对齐"
+    <>
+      {/* Font Family Select - Moved to the top */}
+      <div className="property-group">
+        <label>字体:</label>
+        <select
+          value={textFormat.fontFamily ?? ""}
+          onChange={(e) => handleTextFormatChange("fontFamily", e.target.value)}
+          className="font-family-select" // Add class for potential styling
         >
-          <FontAwesomeIcon icon={faAlignLeft} />
-        </button>
-        <button
-          className={`icon-button ${
-            textFormat.textAlign === "center" ? "active" : ""
-          }`}
-          onClick={() => handleTextFormatChange("textAlign", "center")}
-          title="居中对齐"
-        >
-          <FontAwesomeIcon icon={faAlignCenter} />
-        </button>
-        <button
-          className={`icon-button ${
-            textFormat.textAlign === "right" ? "active" : ""
-          }`}
-          onClick={() => handleTextFormatChange("textAlign", "right")}
-          title="右对齐"
-        >
-          <FontAwesomeIcon icon={faAlignRight} />
-        </button>
-        <button
-          className={`icon-button ${
-            textFormat.textAlign === "justify" ? "active" : ""
-          }`}
-          onClick={() => handleTextFormatChange("textAlign", "justify")}
-          title="两端对齐"
-        >
-          <FontAwesomeIcon icon={faAlignJustify} />
-        </button>
+          <option value="">默认</option>
+          <optgroup label="通用字体">
+            <option value="serif">Serif</option>
+            <option value="sans-serif">Sans-serif</option>
+            <option value="monospace">Monospace</option>
+            <option value="cursive">Cursive</option>
+            <option value="fantasy">Fantasy</option>
+          </optgroup>
+          <optgroup label="常用字体">
+            <option value="Arial, sans-serif">Arial</option>
+            <option value="'Helvetica Neue', Helvetica, Arial, sans-serif">
+              Helvetica Neue
+            </option>
+            <option value="'Times New Roman', Times, serif">
+              Times New Roman
+            </option>
+            <option value="Georgia, serif">Georgia</option>
+            <option value="'Courier New', Courier, monospace">
+              Courier New
+            </option>
+            <option value="'Lucida Console', Monaco, monospace">
+              Lucida Console
+            </option>
+            <option value="'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif">
+              Trebuchet MS
+            </option>
+            <option value="Verdana, Geneva, sans-serif">Verdana</option>
+            {/* Add more specific fonts if needed */}
+          </optgroup>
+        </select>
       </div>
+      {/* Combined Font Size, Color, Weight - Single Line */}
+      {/* Removed the single "样式:" label */}
+      <div className="property-group">
+        <label>样式:</label>
+        <div className="property-subgroup inline-controls">
+          {" "}
+          {/* Container for inline items */}
+          {/* Font Size Item */}
+          <div className="inline-control-item">
+            <label>大小</label> {/* Individual label */}
+            <select
+              value={textFormat.fontSize ?? ""}
+              onChange={(e) =>
+                handleTextFormatChange("fontSize", e.target.value)
+              }
+              title="字体大小"
+              className="font-size-select"
+              // style={{ width: "60px" }} // Width can be controlled by CSS or flex properties
+            >
+              <option value="">默认</option>
+              {[
+                "8px",
+                "9px",
+                "10px",
+                "11px",
+                "12px",
+                "14px",
+                "16px",
+                "18px",
+                "20px",
+                "24px",
+                "28px",
+                "32px",
+                "36px",
+                "40px",
+                "48px",
+                "56px",
+                "64px",
+                "72px",
+              ].map((size) => (
+                <option key={size} value={size}>
+                  {size.replace("px", "")}
+                </option>
+              ))}
+              {/* Add current value if it's not in the list */}
+              {textFormat.fontSize &&
+                ![
+                  "8px",
+                  "9px",
+                  "10px",
+                  "11px",
+                  "12px",
+                  "14px",
+                  "16px",
+                  "18px",
+                  "20px",
+                  "24px",
+                  "28px",
+                  "32px",
+                  "36px",
+                  "40px",
+                  "48px",
+                  "56px",
+                  "64px",
+                  "72px",
+                ].includes(String(textFormat.fontSize)) && (
+                  <option value={textFormat.fontSize}>
+                    {String(textFormat.fontSize).replace("px", "")}
+                  </option>
+                )}
+            </select>
+          </div>
+          {/* Font Color Item */}
+          <div className="inline-control-item">
+            <label>颜色</label> {/* Individual label */}
+            <input
+              type="color"
+              value={textFormat.color ?? "#000000"}
+              onChange={(e) => handleTextFormatChange("color", e.target.value)}
+              title="字体颜色"
+              className="font-color-input"
+            />
+          </div>
+          {/* Font Weight Item */}
+          <div className="inline-control-item">
+            <label>粗细</label> {/* Individual label */}
+            <select
+              value={textFormat.fontWeight ?? ""}
+              onChange={(e) =>
+                handleTextFormatChange("fontWeight", e.target.value)
+              }
+              title="字体粗细"
+              className="font-weight-select"
+              // style={{ width: "90px" }} // Width can be controlled by CSS or flex properties
+            >
+              <option value="">默认</option>
+              <option value="100">Thin</option> {/* Simplified labels */}
+              <option value="200">Extra Light</option>
+              <option value="300">Light</option>
+              <option value="normal">Normal</option>
+              <option value="500">Medium</option>
+              <option value="600">Semi Bold</option>
+              <option value="bold">Bold</option>
+              <option value="800">Extra Bold</option>
+              <option value="900">Black</option>
+              {/* Add current value if it's not in the list */}
+              {textFormat.fontWeight &&
+                ![
+                  "",
+                  "100",
+                  "200",
+                  "300",
+                  "normal",
+                  "400",
+                  "500",
+                  "600",
+                  "bold",
+                  "700",
+                  "800",
+                  "900",
+                ].includes(String(textFormat.fontWeight)) && (
+                  <option value={textFormat.fontWeight}>
+                    {String(textFormat.fontWeight)}
+                  </option>
+                )}
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div className="property-group">
+        <label>对齐:</label>
+        <div className="button-group">
+          <button
+            className={`icon-button ${
+              (textFormat.textAlign ?? "left") === "left" ? "active" : ""
+            }`}
+            onClick={() => handleTextFormatChange("textAlign", "left")}
+            title="左对齐"
+          >
+            <FontAwesomeIcon icon={faAlignLeft} />
+          </button>
+          <button
+            className={`icon-button ${
+              textFormat.textAlign === "center" ? "active" : ""
+            }`}
+            onClick={() => handleTextFormatChange("textAlign", "center")}
+            title="居中对齐"
+          >
+            <FontAwesomeIcon icon={faAlignCenter} />
+          </button>
+          <button
+            className={`icon-button ${
+              textFormat.textAlign === "right" ? "active" : ""
+            }`}
+            onClick={() => handleTextFormatChange("textAlign", "right")}
+            title="右对齐"
+          >
+            <FontAwesomeIcon icon={faAlignRight} />
+          </button>
+          <button
+            className={`icon-button ${
+              textFormat.textAlign === "justify" ? "active" : ""
+            }`}
+            onClick={() => handleTextFormatChange("textAlign", "justify")}
+            title="两端对齐"
+          >
+            <FontAwesomeIcon icon={faAlignJustify} />
+          </button>
+        </div>
+      </div>
+
       {/* Vertical Alignment Buttons */}
-      <label>垂直对齐:</label>
-      <div className="button-group">
-        <button
-          className={`icon-button vertical-align-top ${
-            // Add specific class for rotation
-            (textFormat.verticalAlign ?? "flex-start") === "flex-start"
-              ? "active"
-              : ""
-          }`}
-          onClick={() => handleTextFormatChange("verticalAlign", "flex-start")}
-          title="顶部对齐"
-        >
-          <FontAwesomeIcon icon={faAlignLeft} /> {/* Rotate this with CSS */}
-        </button>
-        <button
-          className={`icon-button vertical-align-middle ${
-            // Add specific class for rotation
-            textFormat.verticalAlign === "center" ? "active" : ""
-          }`}
-          onClick={() => handleTextFormatChange("verticalAlign", "center")}
-          title="居中对齐"
-        >
-          <FontAwesomeIcon icon={faAlignCenter} /> {/* Rotate this with CSS */}
-        </button>
-        <button
-          className={`icon-button vertical-align-bottom ${
-            // Add specific class for rotation
-            textFormat.verticalAlign === "flex-end" ? "active" : ""
-          }`}
-          onClick={() => handleTextFormatChange("verticalAlign", "flex-end")}
-          title="底部对齐"
-        >
-          <FontAwesomeIcon icon={faAlignRight} /> {/* Rotate this with CSS */}
-        </button>
+      <div className="property-group">
+        <label>垂直对齐:</label>
+        <div className="button-group">
+          <button
+            className={`icon-button vertical-align-top ${
+              // Add specific class for rotation
+              (textFormat.verticalAlign ?? "flex-start") === "flex-start"
+                ? "active"
+                : ""
+            }`}
+            onClick={() =>
+              handleTextFormatChange("verticalAlign", "flex-start")
+            }
+            title="顶部对齐"
+          >
+            <FontAwesomeIcon icon={faAlignLeft} /> {/* Rotate this with CSS */}
+          </button>
+          <button
+            className={`icon-button vertical-align-middle ${
+              // Add specific class for rotation
+              textFormat.verticalAlign === "center" ? "active" : ""
+            }`}
+            onClick={() => handleTextFormatChange("verticalAlign", "center")}
+            title="居中对齐"
+          >
+            <FontAwesomeIcon icon={faAlignCenter} />{" "}
+            {/* Rotate this with CSS */}
+          </button>
+          <button
+            className={`icon-button vertical-align-bottom ${
+              // Add specific class for rotation
+              textFormat.verticalAlign === "flex-end" ? "active" : ""
+            }`}
+            onClick={() => handleTextFormatChange("verticalAlign", "flex-end")}
+            title="底部对齐"
+          >
+            <FontAwesomeIcon icon={faAlignRight} /> {/* Rotate this with CSS */}
+          </button>
+        </div>
       </div>
-      {/* Font Family Select */}
-      <label>字体:</label>
-      <select
-        value={textFormat.fontFamily ?? ""}
-        onChange={(e) => handleTextFormatChange("fontFamily", e.target.value)}
-        className="font-family-select" // Add class for potential styling
-      >
-        <option value="">默认</option>
-        <optgroup label="通用字体">
-          <option value="serif">Serif</option>
-          <option value="sans-serif">Sans-serif</option>
-          <option value="monospace">Monospace</option>
-          <option value="cursive">Cursive</option>
-          <option value="fantasy">Fantasy</option>
-        </optgroup>
-        <optgroup label="常用字体">
-          <option value="Arial, sans-serif">Arial</option>
-          <option value="'Helvetica Neue', Helvetica, Arial, sans-serif">
-            Helvetica Neue
-          </option>
-          <option value="'Times New Roman', Times, serif">
-            Times New Roman
-          </option>
-          <option value="Georgia, serif">Georgia</option>
-          <option value="'Courier New', Courier, monospace">Courier New</option>
-          <option value="'Lucida Console', Monaco, monospace">
-            Lucida Console
-          </option>
-          <option value="'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif">
-            Trebuchet MS
-          </option>
-          <option value="Verdana, Geneva, sans-serif">Verdana</option>
-          {/* Add more specific fonts if needed */}
-        </optgroup>
-      </select>
+      {/* Font Family Select is moved to the top */}
       {/* Add more text format inputs: fontStyle, lineHeight etc. */}
-    </div>
+    </>
   );
 };
 
@@ -309,8 +431,8 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
   // --- Alignment Handlers ---
   const handleCenterHorizontally = useCallback(() => {
     if (!selectedNode || !selectedLayer || !selectedLayer.style) return;
-    // Assume fixed node dimensions for now (e.g., from App.tsx defaults)
-    const nodeWidth = 320; // TODO: Make this dynamic if node sizes vary
+    // Use the actual width from the selected node
+    const nodeWidth = selectedNode.width ?? 600; // Use actual width, fallback to default if needed
     const layerWidth = parsePixels(selectedLayer.style.width);
     if (layerWidth > 0) {
       const newLeft = (nodeWidth - layerWidth) / 2;
@@ -320,8 +442,9 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
 
   const handleCenterVertically = useCallback(() => {
     if (!selectedNode || !selectedLayer || !selectedLayer.style) return;
-    // Assume fixed node dimensions for now
-    const nodeHeight = 180; // TODO: Make this dynamic if node sizes vary
+    // Use the actual height from the selected node
+    const nodeWidth = selectedNode.width ?? 600; // Get width for fallback height calculation if needed
+    const nodeHeight = selectedNode.height ?? (nodeWidth * 9) / 16; // Use actual height, fallback to 16:9 based on width
     const layerHeight = parsePixels(selectedLayer.style.height);
     if (layerHeight > 0) {
       const newTop = (nodeHeight - layerHeight) / 2;
@@ -503,6 +626,34 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
                       )}
                     </div>
                   )}
+                {/* Section: Text (Only for text-like layers) */}
+                {(selectedLayer.type === "text" ||
+                  selectedLayer.type === "title" ||
+                  selectedLayer.type === "footer") && (
+                  <div className="accordion-section">
+                    <button
+                      className="accordion-header"
+                      onClick={() => toggleSection("text")}
+                    >
+                      <FontAwesomeIcon
+                        icon={
+                          openSections.text ? faChevronDown : faChevronRight
+                        }
+                        className="accordion-icon"
+                      />
+                      <span>文本</span>
+                    </button>
+                    {openSections.text && (
+                      <div className="accordion-content">
+                        {renderTextFormatEditors(
+                          selectedLayer,
+                          selectedNode.id,
+                          updateLayerData
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
                 {/* Section: Layout (Position, Size, Z-Index) */}
                 <div className="accordion-section">
                   <button
@@ -593,34 +744,6 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
                     </div>
                   )}
                 </div>
-                {/* Section: Text (Only for text-like layers) */}
-                {(selectedLayer.type === "text" ||
-                  selectedLayer.type === "title" ||
-                  selectedLayer.type === "footer") && (
-                  <div className="accordion-section">
-                    <button
-                      className="accordion-header"
-                      onClick={() => toggleSection("text")}
-                    >
-                      <FontAwesomeIcon
-                        icon={
-                          openSections.text ? faChevronDown : faChevronRight
-                        }
-                        className="accordion-icon"
-                      />
-                      <span>文本</span>
-                    </button>
-                    {openSections.text && (
-                      <div className="accordion-content">
-                        {renderTextFormatEditors(
-                          selectedLayer,
-                          selectedNode.id,
-                          updateLayerData
-                        )}
-                      </div>
-                    )}
-                  </div>
-                )}
                 {/* Section: Background (Replaces Fill) */}
                 <div className="accordion-section">
                   <button

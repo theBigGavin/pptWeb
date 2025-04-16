@@ -121,6 +121,8 @@ export type Layer =
 export interface NodeData {
   label: string; // Slide title/name (used in Flow node & LayerPanel root)
   layers: Layer[]; // The core data defining the slide's content and appearance
+  width?: number; // Optional width, passed in data for direct use by SlideNode
+  height?: number; // Optional height, passed in data for direct use by SlideNode
 }
 
 // 7. Keep the SlideNode type definition

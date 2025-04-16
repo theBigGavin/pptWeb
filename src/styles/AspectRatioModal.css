@@ -1,0 +1,96 @@
+/* src/styles/AspectRatioModal.css */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* 半透明黑色背景 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* 确保在顶层 */
+}
+
+.modal-content {
+  background-color: var(--background-color, #fff); /* 使用 CSS 变量适应主题 */
+  color: var(--text-color, #333);
+  padding: 20px 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* 内容间距 */
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 1.4em;
+  color: var(--primary-color, #007bff); /* 使用主题色 */
+}
+
+.ratio-options {
+  display: flex;
+  justify-content: center;
+  gap: 15px; /* 按钮间距 */
+  margin-bottom: 15px;
+}
+
+.ratio-button {
+  padding: 10px 15px;
+  border: 1px solid var(--border-color, #ccc);
+  background-color: var(--secondary-background-color, #f8f9fa);
+  color: var(--text-color, #333);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.ratio-button:hover {
+  background-color: var(--hover-background-color, #e9ecef);
+  border-color: var(--primary-color, #007bff);
+}
+
+.ratio-button.selected {
+  background-color: var(--primary-color, #007bff);
+  color: #fff;
+  border-color: var(--primary-color, #007bff);
+  font-weight: bold;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end; /* 按钮靠右 */
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.modal-actions button {
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s, opacity 0.2s;
+}
+
+.confirm-button {
+  background-color: var(--primary-color, #007bff);
+  color: white;
+  border: none;
+}
+
+.confirm-button:hover {
+  opacity: 0.9;
+}
+
+.cancel-button {
+  background-color: var(--secondary-background-color, #f8f9fa);
+  color: var(--text-color, #333);
+  border: 1px solid var(--border-color, #ccc);
+}
+
+.cancel-button:hover {
+  background-color: var(--hover-background-color, #e9ecef);
+}

@@ -37,7 +37,8 @@ interface FlowCanvasProps {
     newLayerData: Partial<Layer>
   ) => void;
   deleteNode: (nodeId: string) => void;
-  addSlideNode: () => void;
+  // addSlideNode: () => void; // Replaced by handleAddSlideClick
+  handleAddSlideClick: () => void; // Add the new prop for opening the modal
   handleAutoLayout: () => void;
   handleExport: () => void;
   handleClearStorage: () => void; // Add clear storage handler prop
@@ -47,6 +48,9 @@ interface FlowCanvasProps {
   setIsLayerPanelVisible: React.Dispatch<React.SetStateAction<boolean>>;
   setIsPropertiesPanelVisible: React.Dispatch<React.SetStateAction<boolean>>;
   deleteLayer: (nodeId: string, layerId: string) => void; // Add deleteLayer prop
+  // Add fullscreen props
+  toggleFullscreen: () => void;
+  isFullscreen: boolean;
 }
 
 // --- FlowCanvas Component (Refactored) ---
@@ -66,7 +70,8 @@ function FlowCanvas({
   selectedLayerId,
   updateLayerData,
   deleteNode,
-  addSlideNode,
+  // addSlideNode, // Replaced by handleAddSlideClick
+  handleAddSlideClick, // Destructure the new handler
   handleAutoLayout,
   handleExport,
   handleClearStorage, // Destructure clear storage handler
@@ -76,6 +81,9 @@ function FlowCanvas({
   setIsLayerPanelVisible,
   setIsPropertiesPanelVisible,
   deleteLayer, // Destructure deleteLayer
+  // Destructure fullscreen props
+  toggleFullscreen,
+  isFullscreen,
 }: FlowCanvasProps) {
   // --- Prepare Nodes with Extra Data ---
   // Inject necessary functions and state into each node's data prop for SlideNode component
@@ -144,10 +152,12 @@ function FlowCanvas({
     <>
       {/* Toolbar now receives actions from props */}
       <Toolbar
-        addSlide={addSlideNode}
+        // addSlide={addSlideNode} // Pass the new handler
+        addSlide={handleAddSlideClick} // Pass the handler to open the modal
         exportToPptx={handleExport}
         onAutoLayout={handleAutoLayout}
         onClearStorage={handleClearStorage} // Pass clear storage handler
+        onToggleFullscreen={toggleFullscreen} // Pass fullscreen toggle to Toolbar
       />
       <div ref={flowWrapperRef} style={{ width: "100%", height: "100%" }}>
         {/* EditorArea receives the modified nodes array */}
