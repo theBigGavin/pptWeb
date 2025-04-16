@@ -1,5 +1,5 @@
 import PptxGenJS from "pptxgenjs";
-import { SlideNode, Layer, TextLayer, TitleLayer, FooterLayer, MediaLayer, /*TableLayer,*/ /*ChartLayer,*/ BackgroundLayer } from '../types'; // Import necessary types, removed unused TableLayer, ChartLayer
+import { SlideNode, TextLayer, TitleLayer, FooterLayer, MediaLayer, /*TableLayer,*/ /*ChartLayer,*/ BackgroundLayer } from '../types'; // Import necessary types, removed unused Layer, TableLayer, ChartLayer
 import { getNodesInOrder } from './nodeUtils'; // Import node ordering function
 import { Edge } from "reactflow";
 

@@ -66,27 +66,10 @@ const FullscreenPresenter: React.FC<FullscreenPresenterProps> = ({
     //   toggleAutoplay();
     // }
   }, [onExit, goToNext, goToPrev]); // Removed toggleAutoplay if not used
-
-  // Handle mouse click navigation (left/right half of the overlay)
-  const handleSlideClick = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-    // Prevent interfering with control clicks or clicks inside the slide content itself
-    if ((event.target as HTMLElement).closest('.presenter-controls') || (event.target as HTMLElement).closest('.presenter-slide-container')) {
-      return;
-    }
-    // Determine click position relative to the viewport width
-    const clickX = event.clientX;
-    const midPoint = window.innerWidth / 2;
-
-    if (clickX < midPoint) {
-      goToPrev();
-    } else {
-      goToNext();
-    }
-  }, [goToPrev, goToNext]);
-
-  // --- Effects ---
-
-  // Add/Remove Keyboard Listener
+ 
+   // --- Effects ---
+ 
+   // Add/Remove Keyboard Listener
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
     return () => {

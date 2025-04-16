@@ -641,7 +641,7 @@ const AppContent: React.FC = () => {
             setIsPropertiesPanelVisible={setIsPropertiesPanelVisible}
             setSelectedLayerId={setSelectedLayerId} // Pass the correct setter here
             toggleFullscreen={toggleFullscreen} // Pass fullscreen toggle function
-            isFullscreen={isFullscreen} // Pass fullscreen state
+            // isFullscreen={isFullscreen} // Removed unused prop
           />
           <AspectRatioModal
             isOpen={isAspectRatioModalOpen}

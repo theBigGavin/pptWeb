@@ -50,7 +50,7 @@ interface FlowCanvasProps {
   deleteLayer: (nodeId: string, layerId: string) => void; // Add deleteLayer prop
   // Add fullscreen props
   toggleFullscreen: () => void;
-  isFullscreen: boolean;
+  // isFullscreen: boolean; // Removed unused prop
 }
 
 // --- FlowCanvas Component (Refactored) ---
@@ -83,7 +83,7 @@ function FlowCanvas({
   deleteLayer, // Destructure deleteLayer
   // Destructure fullscreen props
   toggleFullscreen,
-  isFullscreen,
+  // isFullscreen, // Removed unused prop
 }: FlowCanvasProps) {
   // --- Prepare Nodes with Extra Data ---
   // Inject necessary functions and state into each node's data prop for SlideNode component

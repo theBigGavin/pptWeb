@@ -1,15 +1,9 @@
 import { Edge, Node } from 'reactflow'; // Import Node type
-import { SlideNode, Layer, NodeData } from '../types'; // Import Layer and NodeData types
+import { SlideNode, NodeData } from '../types'; // Import NodeData types, removed unused Layer
 
 // --- Constants ---
 export const LOCALSTORAGE_KEY_NODES = 'pptWebNodes'; // Export constant
 export const LOCALSTORAGE_KEY_EDGES = 'pptWebEdges'; // Export constant
-
-// Define default layers for the initial node
-const defaultLayers: Layer[] = [
-  { id: `1-bg`, type: 'background', name: '背景', style: { backgroundColor: '#ffffff', width: '100%', height: '100%', zIndex: 0 } },
-  { id: `1-title`, type: 'title', name: '标题', content: `标题 1`, style: { top: '20px', left: '20px', width: '300px', height: 'auto', zIndex: 1, fontSize: '24px', fontWeight: 'bold' }, textFormat: { textAlign: 'center' } },
-];
 
 // Define default initial nodes specifically as SlideNode[]
 // Changed to an empty array to start with a blank canvas by default
