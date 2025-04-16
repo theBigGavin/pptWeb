@@ -25,8 +25,8 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   const [language, setLanguage] = useState<Language>('zh-CN'); // Default to Chinese
   const [llmProvider, setLlmProvider] = useState<LLMProvider>('deepseek'); // Default to DeepSeek
 
-  // Hardcoded version for now - ideally read from package.json or environment variable
-  const appVersion = "0.1.0";
+  // Read version from Vite environment variable injected during build
+  const appVersion = import.meta.env.VITE_APP_VERSION || "N/A"; // Fallback if variable is not set
 
   if (!isOpen) {
     return null;

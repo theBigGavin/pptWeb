@@ -226,90 +226,100 @@ const renderTextFormatEditors = (
       </div>
 
       <div className="property-group">
-        <label>对齐:</label>
-        <div className="button-group">
-          <button
-            className={`icon-button ${
-              (textFormat.textAlign ?? "left") === "left" ? "active" : ""
-            }`}
-            onClick={() => handleTextFormatChange("textAlign", "left")}
-            title="左对齐"
-          >
-            <FontAwesomeIcon icon={faAlignLeft} />
-          </button>
-          <button
-            className={`icon-button ${
-              textFormat.textAlign === "center" ? "active" : ""
-            }`}
-            onClick={() => handleTextFormatChange("textAlign", "center")}
-            title="居中对齐"
-          >
-            <FontAwesomeIcon icon={faAlignCenter} />
-          </button>
-          <button
-            className={`icon-button ${
-              textFormat.textAlign === "right" ? "active" : ""
-            }`}
-            onClick={() => handleTextFormatChange("textAlign", "right")}
-            title="右对齐"
-          >
-            <FontAwesomeIcon icon={faAlignRight} />
-          </button>
-          <button
-            className={`icon-button ${
-              textFormat.textAlign === "justify" ? "active" : ""
-            }`}
-            onClick={() => handleTextFormatChange("textAlign", "justify")}
-            title="两端对齐"
-          >
-            <FontAwesomeIcon icon={faAlignJustify} />
-          </button>
-        </div>
-      </div>
+        <div
+          className="property-subgroup inline-controls"
+          style={{ gap: "20px" }}
+        >
+          <div className="inline-control-item">
+            <label>水平</label>
+            <div className="button-group">
+              <button
+                className={`icon-button ${
+                  (textFormat.textAlign ?? "left") === "left" ? "active" : ""
+                }`}
+                onClick={() => handleTextFormatChange("textAlign", "left")}
+                title="左对齐"
+              >
+                <FontAwesomeIcon icon={faAlignLeft} />
+              </button>
+              <button
+                className={`icon-button ${
+                  textFormat.textAlign === "center" ? "active" : ""
+                }`}
+                onClick={() => handleTextFormatChange("textAlign", "center")}
+                title="居中对齐"
+              >
+                <FontAwesomeIcon icon={faAlignCenter} />
+              </button>
+              <button
+                className={`icon-button ${
+                  textFormat.textAlign === "right" ? "active" : ""
+                }`}
+                onClick={() => handleTextFormatChange("textAlign", "right")}
+                title="右对齐"
+              >
+                <FontAwesomeIcon icon={faAlignRight} />
+              </button>
+              <button
+                className={`icon-button ${
+                  textFormat.textAlign === "justify" ? "active" : ""
+                }`}
+                onClick={() => handleTextFormatChange("textAlign", "justify")}
+                title="两端对齐"
+              >
+                <FontAwesomeIcon icon={faAlignJustify} />
+              </button>
+            </div>
+          </div>
 
-      {/* Vertical Alignment Buttons */}
-      <div className="property-group">
-        <label>垂直对齐:</label>
-        <div className="button-group">
-          <button
-            className={`icon-button vertical-align-top ${
-              // Add specific class for rotation
-              (textFormat.verticalAlign ?? "flex-start") === "flex-start"
-                ? "active"
-                : ""
-            }`}
-            onClick={() =>
-              handleTextFormatChange("verticalAlign", "flex-start")
-            }
-            title="顶部对齐"
-          >
-            <FontAwesomeIcon icon={faAlignLeft} /> {/* Rotate this with CSS */}
-          </button>
-          <button
-            className={`icon-button vertical-align-middle ${
-              // Add specific class for rotation
-              textFormat.verticalAlign === "center" ? "active" : ""
-            }`}
-            onClick={() => handleTextFormatChange("verticalAlign", "center")}
-            title="居中对齐"
-          >
-            <FontAwesomeIcon icon={faAlignCenter} />{" "}
-            {/* Rotate this with CSS */}
-          </button>
-          <button
-            className={`icon-button vertical-align-bottom ${
-              // Add specific class for rotation
-              textFormat.verticalAlign === "flex-end" ? "active" : ""
-            }`}
-            onClick={() => handleTextFormatChange("verticalAlign", "flex-end")}
-            title="底部对齐"
-          >
-            <FontAwesomeIcon icon={faAlignRight} /> {/* Rotate this with CSS */}
-          </button>
+          <div className="inline-control-item ">
+            <label>垂直</label>
+            <div className="button-group">
+              <button
+                className={`icon-button vertical-align-top ${
+                  // Add specific class for rotation
+                  (textFormat.verticalAlign ?? "flex-start") === "flex-start"
+                    ? "active"
+                    : ""
+                }`}
+                onClick={() =>
+                  handleTextFormatChange("verticalAlign", "flex-start")
+                }
+                title="顶部对齐"
+              >
+                <FontAwesomeIcon icon={faAlignLeft} />{" "}
+                {/* Rotate this with CSS */}
+              </button>
+              <button
+                className={`icon-button vertical-align-middle ${
+                  // Add specific class for rotation
+                  textFormat.verticalAlign === "center" ? "active" : ""
+                }`}
+                onClick={() =>
+                  handleTextFormatChange("verticalAlign", "center")
+                }
+                title="居中对齐"
+              >
+                <FontAwesomeIcon icon={faAlignCenter} />{" "}
+                {/* Rotate this with CSS */}
+              </button>
+              <button
+                className={`icon-button vertical-align-bottom ${
+                  // Add specific class for rotation
+                  textFormat.verticalAlign === "flex-end" ? "active" : ""
+                }`}
+                onClick={() =>
+                  handleTextFormatChange("verticalAlign", "flex-end")
+                }
+                title="底部对齐"
+              >
+                <FontAwesomeIcon icon={faAlignRight} />{" "}
+                {/* Rotate this with CSS */}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-      {/* Font Family Select is moved to the top */}
-      {/* Add more text format inputs: fontStyle, lineHeight etc. */}
     </>
   );
 };
@@ -655,95 +665,124 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
                   </div>
                 )}
                 {/* Section: Layout (Position, Size, Z-Index) */}
-                <div className="accordion-section">
-                  <button
-                    className="accordion-header"
-                    onClick={() => toggleSection("layout")}
-                  >
-                    <FontAwesomeIcon
-                      icon={
-                        openSections.layout ? faChevronDown : faChevronRight
-                      }
-                      className="accordion-icon"
-                    />
-                    <span>布局</span>
-                  </button>
-                  {openSections.layout && (
-                    <div className="accordion-content">
-                      {/* Extract Position/Size/Z-index from common editors */}
-                      <div className="property-group">
-                        {/* <h4>位置和大小</h4> */} {/* Title now in header */}
-                        <label>Left:</label>
-                        <input
-                          type="number"
-                          // Use parsePixels for value binding
-                          value={parsePixels(selectedLayer.style?.left) ?? 0}
-                          onChange={(e) =>
-                            handleStyleChange("left", e.target.value + "px")
-                          }
-                        />
-                        <label>Top:</label>
-                        <input
-                          type="number"
-                          // Use parsePixels for value binding
-                          value={parsePixels(selectedLayer.style?.top) ?? 0}
-                          onChange={(e) =>
-                            handleStyleChange("top", e.target.value + "px")
-                          }
-                        />
-                        <label>Width:</label>
-                        <input
-                          type="text"
-                          value={selectedLayer.style?.width ?? ""}
-                          onChange={(e) =>
-                            handleStyleChange("width", e.target.value)
-                          }
-                          placeholder="e.g., 100px or 50%"
-                        />
-                        <label>Height:</label>
-                        <input
-                          type="text"
-                          value={selectedLayer.style?.height ?? ""}
-                          onChange={(e) =>
-                            handleStyleChange("height", e.target.value)
-                          }
-                          placeholder="e.g., 50px or auto"
-                        />
+                {selectedLayer.type !== "background" && (
+                  <div className="accordion-section">
+                    <button
+                      className="accordion-header"
+                      onClick={() => toggleSection("layout")}
+                    >
+                      <FontAwesomeIcon
+                        icon={
+                          openSections.layout ? faChevronDown : faChevronRight
+                        }
+                        className="accordion-icon"
+                      />
+                      <span>布局</span>
+                    </button>
+                    {openSections.layout && (
+                      <div className="accordion-content">
+                        {/* Extract Position/Size/Z-index from common editors */}
+                        {/* Position Group */}
+                        <div className="property-group">
+                          <div className="property-subgroup inline-controls">
+                            <div className="inline-control-item">
+                              <label>左</label>
+                              <input
+                                type="number"
+                                value={
+                                  parsePixels(selectedLayer.style?.left) ?? 0
+                                }
+                                onChange={(e) =>
+                                  handleStyleChange(
+                                    "left",
+                                    e.target.value + "px"
+                                  )
+                                }
+                              />
+                            </div>
+                            <div className="inline-control-item">
+                              <label>右</label>
+                              <input
+                                type="number"
+                                value={
+                                  parsePixels(selectedLayer.style?.top) ?? 0
+                                }
+                                onChange={(e) =>
+                                  handleStyleChange(
+                                    "top",
+                                    e.target.value + "px"
+                                  )
+                                }
+                              />
+                            </div>
+
+                            <div className="inline-control-item">
+                              <label>宽</label>
+                              <input
+                                type="text"
+                                value={selectedLayer.style?.width ?? ""}
+                                onChange={(e) =>
+                                  handleStyleChange("width", e.target.value)
+                                }
+                                placeholder="e.g., 100px or 50%"
+                              />
+                            </div>
+                            <div className="inline-control-item">
+                              <label>高</label>
+                              <input
+                                type="text"
+                                value={selectedLayer.style?.height ?? ""}
+                                onChange={(e) =>
+                                  handleStyleChange("height", e.target.value)
+                                }
+                                placeholder="e.g., 50px or auto"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="property-group">
+                          <div className="property-subgroup inline-controls">
+                            <div className="inline-control-item">
+                              <label
+                                htmlFor={`layerZIndex-${selectedLayer.id}`}
+                              >
+                                层级
+                              </label>
+                              <input
+                                type="number"
+                                id={`layerZIndex-${selectedLayer.id}`}
+                                value={selectedLayer.style?.zIndex ?? 0}
+                                onChange={(e) =>
+                                  handleStyleChange(
+                                    "zIndex",
+                                    parseInt(e.target.value, 10) || 0
+                                  )
+                                }
+                              />
+                            </div>
+                            {/* Centering Buttons */}
+                            <div className="inline-control-item">
+                              <button
+                                onClick={handleCenterHorizontally}
+                                className="align-button"
+                              >
+                                水平居中
+                              </button>
+                            </div>
+                            <div className="inline-control-item">
+                              <button
+                                onClick={handleCenterVertically}
+                                className="align-button"
+                              >
+                                垂直居中
+                              </button>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      <div className="property-group">
-                        <label htmlFor={`layerZIndex-${selectedLayer.id}`}>
-                          层级 (Z-Index):
-                        </label>
-                        <input
-                          type="number"
-                          id={`layerZIndex-${selectedLayer.id}`}
-                          value={selectedLayer.style?.zIndex ?? 0}
-                          onChange={(e) =>
-                            handleStyleChange(
-                              "zIndex",
-                              parseInt(e.target.value, 10) || 0
-                            )
-                          }
-                        />
-                      </div>
-                      {/* Centering Buttons */}
-                      <div className="property-group button-group-align">
-                        <button
-                          onClick={handleCenterHorizontally}
-                          className="align-button"
-                        >
-                          水平居中
-                        </button>
-                        <button
-                          onClick={handleCenterVertically}
-                          className="align-button"
-                        >
-                          垂直居中
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div>
+                    )}
+                  </div>
+                )}
                 {/* Section: Background (Replaces Fill) */}
                 <div className="accordion-section">
                   <button
@@ -913,28 +952,32 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
                 </div>
                 {/* --- Accordion End --- */}
                 {/* Delete Layer Button */}
-                <hr className="properties-panel-separator" />{" "}
-                {/* Separator before delete */}
-                <button
-                  onClick={() => {
-                    if (selectedNode && selectedLayer) {
-                      // Add confirmation dialog
-                      if (
-                        window.confirm(
-                          `确定要删除图层 "${
-                            selectedLayer.name || selectedLayer.id
-                          }" 吗？`
-                        )
-                      ) {
-                        deleteLayer(selectedNode.id, selectedLayer.id);
-                      }
-                    }
-                  }}
-                  className="properties-panel-button delete-layer" /* Use class */
-                  // disabled attribute is already removed
-                >
-                  删除此图层
-                </button>
+                {selectedLayer.type !== "background" && (
+                  <>
+                    <hr className="properties-panel-separator" />{" "}
+                    {/* Separator before delete */}
+                    <button
+                      onClick={() => {
+                        if (selectedNode && selectedLayer) {
+                          // Add confirmation dialog
+                          if (
+                            window.confirm(
+                              `确定要删除图层 "${
+                                selectedLayer.name || selectedLayer.id
+                              }" 吗？`
+                            )
+                          ) {
+                            deleteLayer(selectedNode.id, selectedLayer.id);
+                          }
+                        }
+                      }}
+                      className="properties-panel-button delete-layer" /* Use class */
+                      // disabled attribute is already removed
+                    >
+                      删除此图层
+                    </button>
+                  </>
+                )}
               </>
             ) : (
               <p className="properties-panel-placeholder">

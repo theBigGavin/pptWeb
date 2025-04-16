@@ -46,6 +46,7 @@ import "./styles/AspectRatioModal.css"; // Import modal styles
 import "./styles/FullscreenPresenter.css"; // Import presenter styles
 
 const THEME_STORAGE_KEY = "pptweb-theme";
+const ASPECT_RATIO_STORAGE_KEY = "pptweb-aspect-ratio"; // Key for storing aspect ratio
 
 // Wrap App content to use useReactFlow hook
 const AppContent: React.FC = () => {
@@ -74,7 +75,10 @@ const AppContent: React.FC = () => {
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [selectedLayerId, setSelectedLayerId] = useState<string | null>(null); // Correct state setter
   const [isAspectRatioModalOpen, setIsAspectRatioModalOpen] = useState(false); // State for modal visibility
-  const [lastUsedAspectRatio, setLastUsedAspectRatio] = useState<string | null>(null); // State to store the last used ratio, initially null
+  const [lastUsedAspectRatio, setLastUsedAspectRatio] = useState<string | null>(() => {
+    // Initialize from localStorage or default to null
+    return localStorage.getItem(ASPECT_RATIO_STORAGE_KEY) || null;
+  });
   const [isFullscreen, setIsFullscreen] = useState(false); // State for fullscreen mode
   const [isPreviewActive, setIsPreviewActive] = useState(false); // State for presentation mode active
   const appContainerRef = useRef<HTMLDivElement>(null); // Ref for the main container
@@ -339,16 +343,33 @@ const AppContent: React.FC = () => {
               name: "标题",
               content: `标题 ${newNodeId}`,
               style: {
-                top: "20px",
+                top: "10px",
                 left: "20px",
-                width: "300px",
-                height: "auto",
+                width: "560px",
+                height: "40px",
                 zIndex: 1,
                 fontSize: "24px",
                 fontWeight: "bold",
+                color: "RGB(255, 0, 0)",
                 alignSelf: "center",
               },
-              textFormat: { textAlign: "center" },
+              textFormat: { textAlign: "left" },
+            },
+            {
+              id: `${newNodeId}-title-line`,
+              type: "text",
+              name: "line",
+              content: "",
+              style: {
+                top: "54px",
+                left: "0px",
+                width: "600px",
+                height: "1px",
+                zIndex: 2,
+                backgroundColor: "RGB(255, 0, 0)",
+                alignSelf: "center",
+              },
+              textFormat: { textAlign: "left" },
             },
           ],
         },
@@ -417,7 +438,8 @@ const AppContent: React.FC = () => {
   const handleAspectRatioSelect = useCallback(
     (aspectRatio: string) => {
       addSlideNode(aspectRatio); // Call the modified addSlideNode
-      setLastUsedAspectRatio(aspectRatio); // Store the selected ratio
+      setLastUsedAspectRatio(aspectRatio); // Store the selected ratio in state
+      localStorage.setItem(ASPECT_RATIO_STORAGE_KEY, aspectRatio); // Store in localStorage
       setIsAspectRatioModalOpen(false); // Close the modal
     },
     [addSlideNode, setLastUsedAspectRatio] // Add dependencies
@@ -458,6 +480,7 @@ const AppContent: React.FC = () => {
     ) {
       localStorage.removeItem(LOCALSTORAGE_KEY_NODES);
       localStorage.removeItem(LOCALSTORAGE_KEY_EDGES);
+      localStorage.removeItem(ASPECT_RATIO_STORAGE_KEY); // Also clear the aspect ratio cache
       // Reload the page to apply default state
       window.location.reload();
     }
@@ -505,6 +528,7 @@ const AppContent: React.FC = () => {
               left: "50px",
               width: "150px",
               height: "80px",
+              color: "#000", // Default text color to black
               zIndex:
                 (currentLayers.length > 0
                   ? Math.max(

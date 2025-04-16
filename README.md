@@ -34,6 +34,8 @@ A web-based visual editor for creating PowerPoint presentations using a node-bas
 - **Local Storage Persistence**: Save your work in the browser and reload it later.
 - **Custom Controls & Minimap**: Enhanced canvas navigation with zoom controls, node focusing, and a minimap overview.
 - **Modern Tech Stack**: Built with React 19, TypeScript, and Vite for a fast development experience.
+- **Default Text Color**: New text layers now default to black (`#000`).
+- **Dynamic Version Display**: The version number in the Settings modal now automatically reflects the `package.json` version.
 
 ## 🛠️ Tech Stack
 

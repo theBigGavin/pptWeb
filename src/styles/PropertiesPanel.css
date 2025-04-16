@@ -64,12 +64,26 @@
 
 /* Common styles for form elements */
 .property-group input[type="text"],
-.property-group input[type="color"], /* Keep general style for color */
+
 .property-group input[type="number"],
 .property-group select, /* Keep general style for select */
 .property-group textarea {
   width: 100%; /* Use full width */
   padding: 6px 8px; /* Reduced padding */
+  border: 1px solid var(--figma-panel-border); /* Use Figma variable */
+  background-color: var(--figma-panel-bg); /* Match panel background */
+  color: var(--figma-text-primary); /* Use Figma variable */
+  border-radius: 3px; /* Slightly smaller radius */
+  font-size: 0.85em; /* Slightly smaller font */
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+
+
+.property-group input[type="color"]{ /* Keep general style for color */
+  width: 100%; /* Use full width */
+  padding: 2px 2px; /* Reduced padding */
   border: 1px solid var(--figma-panel-border); /* Use Figma variable */
   background-color: var(--figma-panel-bg); /* Match panel background */
   color: var(--figma-text-primary); /* Use Figma variable */
@@ -367,11 +381,11 @@
 .property-subgroup.inline-controls {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 12px;
   flex-wrap: nowrap;
   width: 100%;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: flex-start;
 }
 
 /* Style for each label-control pair within the inline group */
@@ -379,7 +393,7 @@
   display: flex;
   align-items: center; /* Align label and control vertically */
   gap: 4px; /* Space between label and control */
-  justify-content: space-around;
+  justify-content: flex-start;
 }
 
 /* Adjust label style within inline items */
@@ -389,14 +403,23 @@
   white-space: nowrap; /* Prevent label wrapping */
   color: var(--figma-text-secondary); /* Consistent label color */
   font-size: 0.75em; /* Slightly smaller label */
+  width: 25px;
+  text-align: right;
 }
 
+
+
 /* Adjust control styles within inline items */
-.inline-control-item > select,
 .inline-control-item > input {
-  width: auto; /* Allow natural width or set specific widths */
+  width: 40px !important; /* Allow natural width or set specific widths */
+  padding: 1px !important;
   margin-bottom: 0; /* Remove default bottom margin */
   flex-shrink: 0; /* Prevent controls from shrinking too much */
+}
+
+.inline-control-item > select{
+  width: 80px !important;
+  padding: 1px !important;
 }
 
 /* Remove default margin/width for direct inputs/selects if any remain */
